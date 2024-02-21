@@ -26,6 +26,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Dashboard Analytics Start -->
             <section class="app-user-list">
 
@@ -66,6 +67,7 @@
                                                   <th>CF</th>
                                                   <th>SF</th>
                                                   <th>Total</th>
+                                                  <th>Ranking</th>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -85,6 +87,7 @@
                                                                   <td rowspan="{{$krit->count()}}">{{$corefactor[$user->id][$alt->id]}}</td>
                                                                   <td rowspan="{{$krit->count()}}">{{$secondaryfactor[$user->id][$alt->id]}}</td>
                                                                   <td rowspan="{{$krit->count()}}">{{$total[$user->id][$alt->id]}}</td>
+                                                                  <td rowspan="{{$krit->count()}}">{{$totalrank[$user->id][$alt->id]}}</td>
                                                               @endif
                                                           </tr>
                                                       @endforeach

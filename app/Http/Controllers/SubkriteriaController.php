@@ -45,7 +45,6 @@ class SubkriteriaController extends Controller
     {
         $req->validate([
             'nama' => [
-                'regex:/^[a-zA-Z ]+$/u',
                 'unique:App\Models\Subkriteria,nama'
             ]
         ]);

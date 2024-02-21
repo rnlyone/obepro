@@ -75,7 +75,7 @@
                             <div class="card-header p-0">
                                 <div class="head-label"><h5 class="mt-1">Sub-Kriteria {{$krd->nama}} (C{{$krd->id}})</h5></div>
                                 <div class="dt-action-buttons text-end">
-                                    <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-subkriteria{{$krd->id}}" href="javascript:void(0)" class="btn btn-success" id="tombol-tambah">
+                                    <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-subkriteria{{$krd->id}}" href="javascript:void(0)" class="btn btn-info" id="tombol-tambah">
                                         <i data-feather='plus'></i>
                                     </button>
                                 </div>
@@ -101,7 +101,7 @@
                                             <td>{{$sbd->nama}}</td>
                                             <td>{{$sbd->bobot}}</td>
                                             <td>
-                                                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaleditsub{{$sbd->id}}" type="button" class="edit-post btn btn-icon btn-success">
+                                                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaleditsub{{$sbd->id}}" type="button" class="edit-post btn btn-icon btn-info">
                                                     <i data-feather="edit-3"></i>
                                                 </button>
                                                 <button data-toggle="modal" data-bs-toggle="modal" name="delete" data-original-title="delete" data-bs-target="#modaldel{{$sbd->id}}" type="button" class="delete btn btn-icon btn-outline-danger">

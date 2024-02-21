@@ -54,6 +54,8 @@ class ProfmatController extends Controller
             foreach($dfselisih as $i => $sel){
                 if ($selisih == $sel){
                     return $dfbobot[$i];
+                } else if ($selisih < -4){
+                    return 1;
                 }
             }
 
@@ -80,9 +82,9 @@ class ProfmatController extends Controller
                         } catch (\Throwable $th) {
                             $nilai[$user->id][$al->id][$kr->id] = NULL;
                         }
-                        $gap[$user->id][$al->id][$kr->id] = ProfmatController::gap($nilai[$user->id][$al->id][$kr->id], 5);
-                        $bobotgap[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
-                        $bobotgapcf[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
+                        $gap[$user->id][$al->id][$kr->id] = ProfmatController::gap($nilai[$user->id][$al->id][$kr->id], 7);
+                        $bobotgap[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 7);
+                        $bobotgapcf[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 7);
                         $corefactoraddition[$user->id][$al->id] = $corefactoraddition[$user->id][$al->id] + $bobotgapcf[$user->id][$al->id][$kr->id];
                     }
                     $corefactor[$user->id][$al->id] = $corefactoraddition[$user->id][$al->id] / $krit->where('jenis_kriteria', 'cf')->count();
@@ -92,18 +94,46 @@ class ProfmatController extends Controller
                         } catch (\Throwable $th) {
                             $nilai[$user->id][$al->id][$kr->id] = NULL;
                         }
-                        $gap[$user->id][$al->id][$kr->id] = ProfmatController::gap($nilai[$user->id][$al->id][$kr->id], 5);
-                        $bobotgap[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
-                        $bobotgapsf[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
+                        $gap[$user->id][$al->id][$kr->id] = ProfmatController::gap($nilai[$user->id][$al->id][$kr->id], 7);
+                        $bobotgap[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 7);
+                        $bobotgapsf[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 7);
                         $secondaryfactoraddition[$user->id][$al->id] = $secondaryfactoraddition[$user->id][$al->id] + $bobotgapsf[$user->id][$al->id][$kr->id];
                     }
                     $secondaryfactor[$user->id][$al->id] = $secondaryfactoraddition[$user->id][$al->id] / $krit->where('jenis_kriteria', 'sf')->count();
 
                     $nilaitotal[$user->id][$al->id] = ($corefactor[$user->id][$al->id]*0.6)+($secondaryfactor[$user->id][$al->id]*0.4);
+
+                    $nilaiborda[$al->id] = 0;
+                    $jumlah[$a] = $a+1;
                 }
                 $totalrank[$user->id] = ProfmatController::array_rank($nilaitotal[$user->id]);
                 // dd($totalrank);
             }
+
+            //borda
+            $nilaikhususborda = array();
+            $jumlahreverse = ProfmatController::reverse_rank($jumlah);
+
+            foreach($jumlah as $i => $a) {
+                $nilaikhususborda[] = array($a, $jumlahreverse[$i]);
+            }
+
+            foreach($alt as $a => $al){
+                foreach ($users->where('role', '!=', 'admin') as $u => $user) {
+                    foreach($nilaikhususborda as $i => $b){
+                        if ($totalrank[$user->id][$al->id] == $b[0]) {
+                            $nilaiborda[$al->id] += $b[1];
+                        }
+                    }
+                }
+            }
+
+            $bordarank = ProfmatController::array_rank($nilaiborda);
+
+
+            // dd($bordarank, $nilaiborda);
+
+
             return view('auth.profmat', [
                 'users' => $users,
                 'alter' => $alt,
@@ -115,7 +145,9 @@ class ProfmatController extends Controller
                 'corefactor' => $corefactor,
                 'secondaryfactor' => $secondaryfactor,
                 'total' => $nilaitotal,
-                'totalrank' => $totalrank
+                'totalrank' => $totalrank,
+                'bordarank' => $bordarank,
+                'nilaiborda' => $nilaiborda
             ]);
 
         }
@@ -133,7 +165,9 @@ class ProfmatController extends Controller
                 'corefactor' => ProfmatController::profmat()->corefactor,
                 'secondaryfactor' => ProfmatController::profmat()->secondaryfactor,
                 'total' => ProfmatController::profmat()->total,
-                'totalrank' => ProfmatController::profmat()->totalrank
+                'totalrank' => ProfmatController::profmat()->totalrank,
+                'bordarank' => ProfmatController::profmat()->bordarank,
+                'nilaiborda' => ProfmatController::profmat()->nilaiborda
             ]);
         }
 

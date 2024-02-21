@@ -67,7 +67,7 @@ class UserController extends Controller
             return DataTables::of($userdata)
             ->addColumn('action', function($data){
                 $button = '
-                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaledit'.$data->id.'" type="button" class="edit-post btn btn-icon btn-success">
+                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaledit'.$data->id.'" type="button" class="edit-post btn btn-icon btn-info">
                     <i data-feather="edit-3"></i>
                 </button>';
                 // $button .= '&nbsp;&nbsp;';

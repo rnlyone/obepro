@@ -35,7 +35,7 @@
                         <div class="card-header p-0">
                             <div class="head-label"><h5 class="mt-1">Tabel Data Alternatif</h5></div>
                             <div class="dt-action-buttons text-end">
-                                <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-alternatif" href="javascript:void(0)" class="btn btn-success" id="tombol-tambah">
+                                <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-alternatif" href="javascript:void(0)" class="btn btn-info" id="tombol-tambah">
                                     <i data-feather='plus'></i>
                                 </button>
                             </div>

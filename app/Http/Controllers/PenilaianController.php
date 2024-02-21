@@ -47,7 +47,7 @@ class PenilaianController extends Controller
             return DataTables::of($alterdata)
             ->addColumn('action', function($data){
                 $button = '
-                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaledit'.$data->id.'" type="button" class="edit-post btn btn-icon btn-success">
+                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaledit'.$data->id.'" type="button" class="edit-post btn btn-icon btn-info">
                     <i data-feather="edit-3"></i>
                 </button>';
                 return $button;
@@ -60,12 +60,12 @@ class PenilaianController extends Controller
 
                 #listing untuk status sudah selesai dinilai atau belum
                 $sumkrit = Kriteria::count();
-                $sumnilai = Penilaian::where('id_alternatif', $data->id)->get()->count();
+                $sumnilai = Penilaian::where('id_alternatif', $data->id)->where('id_user', auth()->user()->id)->get()->count();
 
                 if (($sumkrit-$sumnilai) == 0) {
                     $status = '<span class="badge bg-success">Selesai</span>';
                 } else {
-                    $status = '<span class="badge bg-danger">Belum</span>';
+                    $status = '<span class="badge bg-danger">Belum ('.($sumnilai).')</span>';
                 }
                 return $status;
             })
