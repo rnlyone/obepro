@@ -8,7 +8,10 @@ use App\Http\Controllers\ProfmatController;
 use App\Http\Controllers\SubkriteriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-
+use App\Models\Alternatif;
+use App\Models\Kriteria;
+use App\Models\Subkriteria;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,11 +55,13 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('logout', [UserController::class, 'logout'])->name('auth.logout');
 
     Route::get('profmat', [ProfmatController::class, 'profmat'])->name('profmat.index');
-
     Route::get('hasil', [ProfmatController::class, 'indexHasil']);
     Route::get('hasiluser', [ProfmatController::class, 'hasilUser']);
 });
 
-Route::get('/', function () {
-    return redirect()->intended('/dash');
-});
+Route::get('daftar', [AlternatifController::class, 'pemainForm'])->name('pemain.daftar');
+Route::post('daftar', [AlternatifController::class, 'pemainStore'])->name('pemain.store');
+
+Route::get('hasil-guest', [ProfmatController::class, 'indexHasilGuest'])->name('hasil.guest');
+
+Route::get('/', [UserController::class, 'welcome'])->name('welcome');

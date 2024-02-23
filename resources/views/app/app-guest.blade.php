@@ -89,22 +89,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 </li>
                 <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
                             data-feather="moon"></i></a></li>
-                <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link"
-                        id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">{{auth()->user()->name}}</span><span
-                                class="user-status">@if (auth()->user()->role == 'admin')
-                                    {{auth()->user()->role}}
-                                    @else
-                                    User
-                                @endif</span></div><span class="avatar"><img class="round"
-                                src="/app-assets/images/user.png" alt="avatar" height="40"
-                                width="40"><span class="avatar-status-online"></span></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user"><a
-                            class="dropdown-item" href="/logout"><i class="me-50"
-                                data-feather="power"></i> Logout</a>
-                    </div>
+                <li class="nav-item dropdown dropdown-user"><a href="{{route('login')}}" class="btn btn-primary waves-effect waves-float waves-light">Login</a>
                 </li>
             </ul>
         </div>
@@ -161,7 +146,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </g>
                                     </g>
                                 </svg></span>
-                            <h2 class="brand-text">INDOBARCA</h2>
+
                         </a></li>
                     <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i
                                 class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i
@@ -173,47 +158,18 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- Horizontal menu content-->
             <div class="navbar-container main-menu-content" data-menu="menu-container">
                 <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-                    <li class="{{$dash_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/dash"><i
+                    <li class="{{$dash_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="{{route('welcome')}}"><i
                                 data-feather="home"></i><span class="menu-title text-truncate"
                                 data-i18n="Documentation">Dashboard</span></a>
                     </li>
-                    @if (auth()->user()->role == 'admin')
-                        <li class="{{$alter_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/alternatif"><i
-                                    data-feather="database"></i><span class="menu-title text-truncate"
-                                    data-i18n="Data Alternatif">Data Alternatif</span></a>
-                        </li>
-                        <li class="{{$kriteria_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/kriteria"><i
-                                    data-feather="check-square"></i><span class="menu-title text-truncate"
-                                    data-i18n="Data Kriteria">Data Kriteria</span></a>
-                        </li>
-                        <li class="{{$subkriteria_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/subkriteria"><i
-                                    data-feather="check-circle"></i><span class="menu-title text-truncate"
-                                    data-i18n="Data Sub-Kriteria">Data Sub-Kriteria</span></a>
-                        </li>
-                        <li class="{{$profmat_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="{{route('profmat.index')}}"><i
-                                    data-feather="edit-2"></i><span class="menu-title text-truncate"
-                                    data-i18n="Data Hitung profmat">Data Profmat</span></a>
-                        </li>
-                        <li class="{{$hasil_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/hasil"><i
-                                    data-feather="archive"></i><span class="menu-title text-truncate"
-                                    data-i18n="Data Hasil Akhir">Data Hasil Akhir</span></a>
-                        </li>
-                    @else
-                        <li class="{{$penilaian_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/penilaian"><i
-                            data-feather="file-text"></i><span class="menu-title text-truncate"
-                            data-i18n="Penilaian">Penilaian</span></a>
-                        </li>
-                        <li class="{{$hasil_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/hasil"><i
+                    <li class="{{$daftar_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="{{route('pemain.daftar')}}"><i
+                        data-feather="users"></i><span class="menu-title text-truncate"
+                        data-i18n="Data Hasil Akhir">Form Pemain</span></a>
+                     </li>
+                    <li class="{{$hasil_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="{{route('hasil.guest')}}"><i
                             data-feather="archive"></i><span class="menu-title text-truncate"
                             data-i18n="Data Hasil Akhir">Data Hasil Akhir</span></a>
-                        </li>
-                    @endif
-                    @if (auth()->user()->role == 'admin')
-                        <li class="{{$user_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/user"><i
-                            data-feather="user"></i><span class="menu-title text-truncate"
-                            data-i18n="Data User">User Management</span></a>
-                        </li>
-                    @endif
+                    </li>
                 </ul>
             </div>
         </div>

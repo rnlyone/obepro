@@ -150,26 +150,13 @@
                                   class="form-check-input"
                                   type="radio"
                                   name="role"
-                                  id="kepsekid"
-                                  value="kepsek"
-                                  @if ($usd->role == "kepsek")
+                                  id="userid"
+                                  value="user"
+                                  @if ($usd->role == "user")
                                     checked
                                   @endif
                                 />
-                                <label class="form-check-label" for="kepsekid">Kepala Sekolah</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input
-                                  class="form-check-input"
-                                  type="radio"
-                                  name="role"
-                                  id="idguru"
-                                  value="guru"
-                                  @if ($usd->role == "guru")
-                                    checked
-                                  @endif
-                                />
-                                <label class="form-check-label" for="idguru">Guru</label>
+                                <label class="form-check-label" for="userid">User</label>
                               </div>
                         </div>
                     </div>

@@ -12,18 +12,13 @@ class Alternatif extends Model
     protected $fillable = [
         'id',
         'nama',
-        'kelas',
+        'tempatlahir',
+        'borndate',
+        'alamat',
+        'nohp',
+        'email',
     ];
 
-    public function kelas()
-    {
-        return $this->belongsTo('App\Models\Kelas', 'kelas');
-    }
-
-    public function walikelas($userid)
-    {
-        return $this->kelas()->where('walikelas', $userid);
-    }
 
     public function penilaian()
     {

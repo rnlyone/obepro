@@ -15,12 +15,11 @@
                     <div class="col-xl-4 col-md-6 col-12">
                       <div class="card card-congratulation-medal">
                         <div class="card-body">
-                          <h5>Congratulations 🎉 John!</h5>
-                          <p class="card-text font-small-3">You have won gold medal</p>
-                          <h3 class="mb-75 mt-2 pt-50">
-                            <a href="#">$48.9k</a>
-                          </h3>
-                          <button type="button" class="btn btn-primary waves-effect waves-float waves-light">View Sales</button>
+                          <h5>Selamat Datang 🎉 {{auth()->user()->name}}!</h5>
+                          <p class="card-text font-small-3">Sistem Optimalisasi Pemilihan Pemain Futsal</p>
+                          @if (auth()->user()->role == 'user')
+                            <a href="{{route('penilaian.index')}}" class="btn btn-primary waves-effect waves-float waves-light">Beri Penilaian</a>
+                          @endif
                           <img src="../../../app-assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic">
                         </div>
                       </div>
@@ -31,9 +30,9 @@
                     <div class="col-xl-8 col-md-6 col-12">
                       <div class="card card-statistics">
                         <div class="card-header">
-                          <h4 class="card-title">Statistics</h4>
+                          <h4 class="card-title">Statistik</h4>
                           <div class="d-flex align-items-center">
-                            <p class="card-text font-small-2 me-25 mb-0">Updated 1 month ago</p>
+                            <p class="card-text font-small-2 me-25 mb-0"></p>
                           </div>
                         </div>
                         <div class="card-body statistics-body">
@@ -42,12 +41,12 @@
                               <div class="d-flex flex-row">
                                 <div class="avatar bg-light-primary me-2">
                                   <div class="avatar-content">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up avatar-icon"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                    <i data-feather="users"></i>
                                   </div>
                                 </div>
                                 <div class="my-auto">
-                                  <h4 class="fw-bolder mb-0">230k</h4>
-                                  <p class="card-text font-small-3 mb-0">Sales</p>
+                                  <h4 class="fw-bolder mb-0">{{$jmlalter}}</h4>
+                                  <p class="card-text font-small-3 mb-0">Pemain</p>
                                 </div>
                               </div>
                             </div>
@@ -55,12 +54,12 @@
                               <div class="d-flex flex-row">
                                 <div class="avatar bg-light-info me-2">
                                   <div class="avatar-content">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user avatar-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <i data-feather="user"></i>
                                   </div>
                                 </div>
                                 <div class="my-auto">
-                                  <h4 class="fw-bolder mb-0">8.549k</h4>
-                                  <p class="card-text font-small-3 mb-0">Customers</p>
+                                  <h4 class="fw-bolder mb-0">{{$jmlpenilai}}</h4>
+                                  <p class="card-text font-small-3 mb-0">Penilai</p>
                                 </div>
                               </div>
                             </div>
@@ -72,8 +71,8 @@
                                   </div>
                                 </div>
                                 <div class="my-auto">
-                                  <h4 class="fw-bolder mb-0">1.423k</h4>
-                                  <p class="card-text font-small-3 mb-0">Products</p>
+                                  <h4 class="fw-bolder mb-0">{{$jmlkrit}}</h4>
+                                  <p class="card-text font-small-3 mb-0">Kriteria</p>
                                 </div>
                               </div>
                             </div>
@@ -85,8 +84,8 @@
                                   </div>
                                 </div>
                                 <div class="my-auto">
-                                  <h4 class="fw-bolder mb-0">$9745</h4>
-                                  <p class="card-text font-small-3 mb-0">Revenue</p>
+                                  <h4 class="fw-bolder mb-0">{{$jmlsubkrit}}</h4>
+                                  <p class="card-text font-small-3 mb-0">Sub Kriteria</p>
                                 </div>
                               </div>
                             </div>
@@ -98,10 +97,10 @@
                   </div>
 
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header">
-                              <h4 class="card-title">Contoh Alternatif</h4>
+                              <h4 class="card-title">Persyaratan Pemain Inti Tim Futsal Indobarca Makassar</h4>
                             </div>
                             {{-- <div class="card-body">
                               <p class="card-text">
@@ -109,31 +108,27 @@
                                 <code>.table-dark</code> along with <code>.table-bordered</code>.
                               </p>
                             </div> --}}
-                            @php
-                                $alt = ['AlfaMidi', 'AlfaMart', 'Indomaret', 'Cicle K', 'MiniMart', 'Hypermart', 'Lottemart', 'Kios/Pedagang Kaki 5', 'Percetakan', 'Sablon'];
-                                $ket = ['Retail Modern', 'Pasar Tradisional'];
-
-                            @endphp
                             <div class="table-responsive">
                               <table class="table table-bordered">
                                 <thead>
-                                  <tr>
-                                    <th>No.</th>
-                                    <th>Keterangan</th>
-                                    <th>Alternatif</th>
-                                  </tr>
+                                    <tr>
+                                        @foreach ($kriteria as $krit)
+                                            <th>{{$krit->nama}}</th>
+                                        @endforeach
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($alt as $a => $al)
-                                        <tr>
+                                    <tr>
+                                        @foreach ($kriteria as $krit)
                                             <td>
-                                                {{$a+1}}
+                                                @foreach ($krit->subkriteria as $subkriteria)
+                                                    {{$subkriteria->nama}}<br><br>
+                                                @endforeach
                                             </td>
-                                            <td >@if ($a < 7) {{$ket[0]}} @else {{$ket[1]}} @endif</td>
-                                            <td>{{$al}}</td>
-                                        </tr>
-                                    @endforeach
+                                        @endforeach
+                                    </tr>
                                 </tbody>
+
                               </table>
                             </div>
                           </div>

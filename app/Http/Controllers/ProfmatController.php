@@ -133,10 +133,18 @@ class ProfmatController extends Controller
 
             // dd($bordarank, $nilaiborda);
 
+            // Setelah Anda menghitung nilai borda, tambahkan nilai borda ke dalam objek Alternatif
+            foreach($alt as $a => $al){
+                $al->nilaiborda = $nilaiborda[$al->id];
+            }
+
+            // Urutkan objek Alternatif berdasarkan nilai borda
+            $sortedAlt = $alt->sortByDesc('nilaiborda');
+
 
             return view('auth.profmat', [
                 'users' => $users,
-                'alter' => $alt,
+                'alter' => $sortedAlt,
                 'krit' => $krit,
                 'sub' => $sub,
                 'nilai' => $peniliaian,
@@ -155,6 +163,25 @@ class ProfmatController extends Controller
         public function indexHasil()
         {
             return view('auth.hasil', [
+                'users' => ProfmatController::profmat()->users,
+                'alter' => ProfmatController::profmat()->alter,
+                'krit' => ProfmatController::profmat()->krit,
+                'sub' => ProfmatController::profmat()->sub,
+                'nilai' => ProfmatController::profmat()->nilai,
+                'gap' => ProfmatController::profmat()->gap,
+                'bobotgap' => ProfmatController::profmat()->bobotgap,
+                'corefactor' => ProfmatController::profmat()->corefactor,
+                'secondaryfactor' => ProfmatController::profmat()->secondaryfactor,
+                'total' => ProfmatController::profmat()->total,
+                'totalrank' => ProfmatController::profmat()->totalrank,
+                'bordarank' => ProfmatController::profmat()->bordarank,
+                'nilaiborda' => ProfmatController::profmat()->nilaiborda
+            ]);
+        }
+
+        public function indexHasilGuest()
+        {
+            return view('hasil-guest', [
                 'users' => ProfmatController::profmat()->users,
                 'alter' => ProfmatController::profmat()->alter,
                 'krit' => ProfmatController::profmat()->krit,

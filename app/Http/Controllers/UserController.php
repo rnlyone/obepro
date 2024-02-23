@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alternatif;
+use App\Models\Kriteria;
 use App\Models\Penilaian;
+use App\Models\Subkriteria;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +47,36 @@ class UserController extends Controller
     public function indexDash()
     {
         #fungsi menampilkan tampilan dashboard
-        return view('auth.dashboard');
+        $jmlalter = Alternatif::all()->count();
+        $jmlpenilai = User::where('role', 'user')->count();
+        $jmlkrit = Kriteria::all()->count();
+        $jmlsubkrit = Subkriteria::all()->count();
+        $kriteria = Kriteria::all();
+
+        return view('auth.dashboard', [
+            'jmlalter' => $jmlalter,
+            'jmlpenilai' => $jmlpenilai,
+            'jmlkrit' => $jmlkrit,
+            'jmlsubkrit' => $jmlsubkrit,
+            'kriteria' => $kriteria,
+        ]);
+    }
+
+    public function welcome(){
+        #fungsi menampilkan tampilan dashboard
+    $jmlalter = Alternatif::all()->count();
+    $jmlpenilai = User::where('role', 'user')->count();
+    $jmlkrit = Kriteria::all()->count();
+    $jmlsubkrit = Subkriteria::all()->count();
+    $kriteria = Kriteria::all();
+
+    return view('welcome', [
+        'jmlalter' => $jmlalter,
+        'jmlpenilai' => $jmlpenilai,
+        'jmlkrit' => $jmlkrit,
+        'jmlsubkrit' => $jmlsubkrit,
+        'kriteria' => $kriteria,
+    ]);
     }
 
 

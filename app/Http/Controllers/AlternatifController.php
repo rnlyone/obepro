@@ -7,6 +7,7 @@ use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Exception;
+use Illuminate\Support\Facades\Redis;
 
 class AlternatifController extends Controller
 {
@@ -97,26 +98,54 @@ class AlternatifController extends Controller
 
     public function editalternatif(Request $req)
     {
-        $req->validate([
+        $validatedData = $req->validate([
             'id' => [
                 'unique:App\Models\Alternatif,id,'.$req->idedit,
                 'required'
             ],
-            'nama' => [
-                // 'unique:App\Models\Alternatif,nama, '.$req->nama,
-                'required'
-            ]
+            'nama' => 'required|string',
+            'tempatlahir' => 'required|string',
+            'borndate' => 'required|date',
+            'alamat' => 'required|string',
+            'nohp' => 'required|string',
+            'email' => 'required|email',
         ]);
 
         try {
-            Alternatif::where('id', $req->idedit)->update([
-                'id' => $req->id,
-                'nama' => $req->nama,
-            ]);
+            Alternatif::findOrFail($req->id)->update($validatedData);
             return back()->with('success', 'Alternatif Berhasil Diedit.');
         } catch (Exception $e) {
             return back()->with('error', 'Maaf Alternatif Gagal Diedit');
         }
+    }
+
+    public function pemainStore(Request $request)
+    {
+        // Validasi input form jika diperlukan
+        $validatedData = $request->validate([
+            'nama' => 'required|string',
+            'tempatlahir' => 'required|string',
+            'borndate' => 'required|date',
+            'alamat' => 'required|string',
+            'nohp' => 'required|string',
+            'email' => 'required|email',
+            // Tambahkan validasi untuk kolom-kolom baru jika diperlukan
+        ]);
+
+        // Simpan data ke dalam database
+        Alternatif::create($validatedData);
+
+        return back()->with('success', 'Pemain berhasil disimpan.');
+
+    }
+
+    public function pemainForm(Request $request)
+    {
+        $alternatif = Alternatif::all();
+
+        return view('daftar', [
+            'alternatif' => $alternatif,
+        ]);
     }
 
     /**

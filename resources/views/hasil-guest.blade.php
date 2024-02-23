@@ -1,4 +1,4 @@
-@include('app.app', ['hasil_active' => 'active', 'title' => 'Hasil Akhir'])
+@include('app.app-guest', ['hasil_active' => 'active', 'title' => 'Hasil Akhir'])
 
 <!-- BEGIN: Content-->
 <div class="app-content content ">
@@ -29,6 +29,7 @@
             <!-- Dashboard Analytics Start -->
             <section class="app-user-list">
 
+                @auth
                 <section id="accordion-with-margin">
                     <div class="row">
                       <div class="col-sm-12">
@@ -134,7 +135,7 @@
                                                 <tbody>
                                                     @foreach ($alter as $a => $alt)
                                                             <tr>
-                                                                <td>{{$a+1}}</td>
+                                                                <td>{{$a}}</td>
                                                                 <td>{{$alt->nama}}</td>
                                                                 <td>{{$corefactor[auth()->user()->id][$alt->id]}}</td>
                                                                 <td>{{$secondaryfactor[auth()->user()->id][$alt->id]}}</td>
@@ -179,6 +180,7 @@
                   </section>
 
             </section>
+                @endauth
 
                         <!-- ChartJS section start -->
                         <section id="chartjs-chart">

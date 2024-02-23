@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subkriteria extends Model
 {
-    use HasFactory;
+use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'id_kriteria',
-        'nama',
-        'bobot'
-    ];
+protected $fillable = [
+    'id',
+    'id_kriteria',
+    'nama',
+    'bobot'
+];
+
+public function kriteria()
+{
+    return $this->belongsTo(Kriteria::class, 'id_kriteria');
+}
 }
