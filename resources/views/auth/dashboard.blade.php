@@ -120,9 +120,9 @@
                                 <tbody>
                                     <tr>
                                         @foreach ($kriteria as $krit)
-                                            <td>
+                                            <td style="vertical-align:top;padding-top:25px">
                                                 @foreach ($krit->subkriteria as $subkriteria)
-                                                    {{$subkriteria->nama}}<br><br>
+                                                    {{$subkriteria->nama}}<br>________<br>
                                                 @endforeach
                                             </td>
                                         @endforeach
