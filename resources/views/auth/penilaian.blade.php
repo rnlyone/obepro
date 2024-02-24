@@ -52,28 +52,27 @@
                             </thead>
                         </table>
                     </div>
-                    <!-- Modal to add new user starts-->
+                    @if (session()->get('success'))
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">Sukses</h4>
+                        <div class="alert-body">
+                            {{session('success')}}
+                        </div>
+                      </div>
+                    @elseif (session()->get('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Error</h4>
+                        <div class="alert-body">
+                            {{session('error')}}
+                        </div>
+                      </div>
+                    @endif
 
                     </div>
                     <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list section end -->
             </section>
-            @if (session()->get('success'))
-            <div class="alert alert-success" role="alert">
-                <h4 class="alert-heading">Sukses</h4>
-                <div class="alert-body">
-                    {{session('success')}}
-                </div>
-              </div>
-            @elseif (session()->get('error'))
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Error</h4>
-                <div class="alert-body">
-                    {{session('error')}}
-                </div>
-              </div>
-            @endif
 
         </div>
     </div>
