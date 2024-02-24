@@ -216,8 +216,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @php
+                                                        $i = 0;
+                                                    @endphp
                                                     @foreach ($alter as $a => $alt)
-                                                            <tr @if ($a <= 4)
+                                                            <tr @if ($i <= 4)
                                                                 style="background-color: lightgreen"
                                                             @else
                                                                 style="background-color: lightcoral"
@@ -227,15 +230,15 @@
                                                                 <td>{{$alt->nilaiborda}}</td>
                                                                 <td>{{$bordarank[$a+1]}}</td>
                                                             </tr>
+                                                            @php
+                                                                $i++;
+                                                            @endphp
                                                     @endforeach
+
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <!-- Bar Chart End -->
+                                                                <!-- Bar Chart End -->
             @if (session()->get('success'))
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">Sukses</h4>
@@ -251,7 +254,10 @@
                 </div>
               </div>
             @endif
-
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
         </div>
     </div>
 </div>

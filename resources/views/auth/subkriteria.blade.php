@@ -170,7 +170,7 @@
                                 </div>
                                 <label>Bobot Sub-Kriteria: </label>
                                     <div class="mb-1">
-                                        <input type="text" name="bobot" class="touchspin" data-bts-step="0.01" data-bts-decimals="2" value="{{$sbd->bobot}}"/>
+                                        <input type="text" name="bobot" class="touchspin" data-bts-step="1" value="{{$sbd->bobot}}"/>
                                     </div>
                             </div>
                             <div class="modal-footer">

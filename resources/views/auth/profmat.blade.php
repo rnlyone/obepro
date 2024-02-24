@@ -80,7 +80,7 @@
                                                               @endif
                                                               <td colspan="3">{{$kr->nama}}</td>
                                                               <td colspan="4">{{$sub->find($nilai->where('id_user', $user->id)->where('id_alternatif', $alt->id)->where('id_kriteria', $kr->id)->first()->id_subkriteria ?? "")->nama ?? 'NULL'}} | ({{$nilai->where('id_user', $user->id)->where('id_alternatif', $alt->id)->where('id_kriteria', $kr->id)->first()->nilai ?? 'NULL'}})</td>
-                                                              <td>5</td>
+                                                              <td>7</td>
                                                               <td>{{$gap[$user->id][$alt->id][$kr->id]}}</td>
                                                               <td>{{$bobotgap[$user->id][$alt->id][$kr->id]}}</td>
                                                               @if ($k == 0)
