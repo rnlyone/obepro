@@ -227,7 +227,7 @@
                                                                 <td>{{$a+1}}</td>
                                                                 <td>{{$alt->nama}}</td>
                                                                 <td>{{$alt->nilaiborda}}</td>
-                                                                <td>{{$bordarank[$a+1]}}</td>
+                                                                <td>{{$bordarank[$alt->id]}}</td>
                                                             </tr>
                                                     @endforeach
                                                 </tbody>
