@@ -12,21 +12,82 @@ use Illuminate\Http\Request;
 class ProfmatController extends Controller
 {
 
-    function array_rank( $in ) {
-        $x = $in; arsort($x);
-        $rank       = 0;
-        $hiddenrank = 0;
-        $hold = null;
-        foreach ( $x as $key=>$val ) {
-            $hiddenrank += 1;
-            $rank = $hiddenrank;
-            if ( is_null($hold) || $val < $hold ) {
-                $hold = $val;
+    function array_rank($array) {
+        $sortedArray = $array;
+        arsort($sortedArray);  // Sort the array in descending order while preserving keys
+
+        // dd($sortedArray);
+        $rankedArray = [];
+        $rank = 1;
+
+        foreach ($sortedArray as $index => $value) {
+            $rankedArray[$index] = $rank;
+            $rank++;
+        }
+
+    return $rankedArray;
+    }
+
+    function reformatArray($array) {
+        $formattedArray = [];
+
+        foreach ($array as $index => $value) {
+            $formattedArray[] = [$index => $value];
+        }
+
+        return $formattedArray;
+    }
+
+    function make_rank($array){
+        arsort($array);
+        // Custom sorting function for elements with the same values
+        uksort($array, function($a, $b) use ($array) {
+            // dd($array);
+            if ($array[$a] == $array[$b]) {
+                if ($a < $b) {
+                    return $a <=> $b; // Sort in ascending order based on keys
+                }
             }
-            $in[$key] = $rank;
+            return 0; // Maintain the order for elements with different values
+        });
+
+        $rank = 1;
+        $rankedArray = [];
+
+        foreach ($array as $index => $value) {
+            $rankedArray[$index] = $rank;
+            $rank++;
         }
-        return $in;
+
+        return $array;
+    }
+
+    function transform_rank($inputArray) {
+        // Extract the inner array
+        $array = [];
+        // dd($inputArray);
+        foreach ($inputArray as $i => $a) {
+            // $array = reset($inputArray);
+            // dd($a);
+            $array = array_replace($array, $a);
         }
+        // $ranked = ProfmatController::array_rank($array);
+        // return $ranked;
+        // dd($array,$ranked);
+
+    }
+
+    function reverse_karray( $in ) {
+        $k = array_keys($in);
+        $kr = array_reverse($k);
+
+        $v = array_values($in);
+        $rv = array_reverse($v);
+
+        $b = array_combine($kr, $rv);
+
+        return $b;
+    }
 
         function reverse_rank( $in ) {
             $k = array_keys($in);
@@ -101,22 +162,35 @@ class ProfmatController extends Controller
                     }
                     $secondaryfactor[$user->id][$al->id] = $secondaryfactoraddition[$user->id][$al->id] / $krit->where('jenis_kriteria', 'sf')->count();
 
-                    $nilaitotal[$user->id][$al->id] = ($corefactor[$user->id][$al->id]*0.6)+($secondaryfactor[$user->id][$al->id]*0.4);
+                    $nilaitotal[$user->id][$al->id] = number_format(($corefactor[$user->id][$al->id]*0.6)+($secondaryfactor[$user->id][$al->id]*0.4), 1, '.', '');
 
                     $nilaiborda[$al->id] = 0;
                     $jumlah[$a] = $a+1;
                 }
+                // dd($nilaitotal[$user->id], ProfmatController::reverse_karray($nilaitotal[$user->id]) );
                 $totalrank[$user->id] = ProfmatController::array_rank($nilaitotal[$user->id]);
-                // dd($totalrank);
+                // $reformatnilaitotal = ProfmatController::reformatArray($nilaitotal[$user->id]);
+                // $ranktot[$user->id] = ProfmatController::make_rank($nilaitotal[$user->id]);
+                // $finrank[$user->id] = ProfmatController::transform_rank($ranktot[$user->id]);
+                // dd($ranktot);
             }
+            // dd($nilaitotal,$totalrank);
+            // dd($ranktot);
+            // dd($nilaitotal[13]);
+            // arsort($nilaitotal[13]);
+            // dd($nilaitotal[13]);
 
             //borda
             $nilaikhususborda = array();
             $jumlahreverse = ProfmatController::reverse_rank($jumlah);
 
+            // dd($jumlah, $jumlahreverse);
+
             foreach($jumlah as $i => $a) {
                 $nilaikhususborda[] = array($a, $jumlahreverse[$i]);
             }
+
+            // dd($nilaikhususborda);
 
             foreach($alt as $a => $al){
                 foreach ($users->where('role', '!=', 'admin') as $u => $user) {
