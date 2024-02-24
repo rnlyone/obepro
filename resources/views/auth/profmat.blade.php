@@ -71,11 +71,11 @@
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                  @foreach ($alter as $a => $alt)
+                                                  @foreach ($normalalter as $a => $alt)
                                                       @foreach ($krit as $k => $kr)
                                                           <tr>
                                                               @if ($k == 0)
-                                                              <td rowspan="{{$krit->count()}}">{{$a}}</td>
+                                                              <td rowspan="{{$krit->count()}}">{{$a+1}}</td>
                                                               <td rowspan="{{$krit->count()}}">{{$alt->nama}}</td>
                                                               @endif
                                                               <td colspan="3">{{$kr->nama}}</td>

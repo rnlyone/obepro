@@ -142,9 +142,11 @@ class ProfmatController extends Controller
             $sortedAlt = $alt->sortByDesc('nilaiborda');
 
 
+
             return view('auth.profmat', [
                 'users' => $users,
                 'alter' => $sortedAlt,
+                'normalalter' => $alt,
                 'krit' => $krit,
                 'sub' => $sub,
                 'nilai' => $peniliaian,
