@@ -218,8 +218,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @php
+                                                        $i = 0;
+                                                    @endphp
                                                     @foreach ($alter as $a => $alt)
-                                                            <tr @if ($a <= 4)
+                                                            <tr @if ($i <= 4)
                                                                 style="background-color: lightgreen"
                                                             @else
                                                                 style="background-color: lightcoral"
@@ -229,6 +232,9 @@
                                                                 <td>{{$alt->nilaiborda}}</td>
                                                                 <td>{{$bordarank[$alt->id]}}</td>
                                                             </tr>
+                                                            @php
+                                                                $i++;
+                                                            @endphp
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -277,24 +283,6 @@
 {{-- <script src="/app-assets/js/scripts/charts/chart-chartjs.min.js"></script> --}}
 <!-- END: Page JS-->
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script>
-
-    $(document).ready(function(){
-        const table = $('.wptable').DataTable({
-            searching: false, paging: false, info: false,
-            order: [[5, 'asc']]
-        })
-        });
-
-        $(document).ready(function(){
-        const table = $('.bordatable').DataTable({
-            searching: false, paging: false, info: false,
-            order: [[3, 'asc']]
-        })
-        });
-
-</script>
-
 <script>
     $(window).on("load", (function () {
     var t = $(".bar-chart-ex"),
