@@ -1,5 +1,38 @@
 @include('app.app', ['hasil_active' => 'active', 'title' => 'Hasil Akhir'])
 
+@php
+    function classify($kgd, $td, $kol){
+            $kesimpulan = "";
+            $kategori = 0;
+            if($kgd <= 3){
+                $kesimpulan .= "Menu Diabetes";
+                $kategori++;
+            }
+
+            if($td <= 3){
+                if($kategori >= 1){
+                    $kesimpulan .= " + Rendah Natrium";
+                }elseif ($kategori == 0){
+                    $kesimpulan .= "Menu Rendah Natrium";
+                }
+            }
+
+            if($kol <= 3){
+                if($kategori >= 1){
+                    $kesimpulan .= " + Rendah Kolestrol";
+                }elseif ($kategori == 0){
+                    $kesimpulan .= "Menu Rendah Kolestrol";
+                }
+            }
+
+            if ($kesimpulan == ""){
+                return $kesimpulan = "Menu Normal";
+            }
+
+            return $kesimpulan;
+        }
+@endphp
+
 <!-- BEGIN: Content-->
 <div class="app-content content ">
     <div class="content-overlay"></div>
@@ -57,6 +90,7 @@
                                                         <th>CF</th>
                                                         <th>SF</th>
                                                         <th>Total</th>
+                                                        <th>Menu Makanan</th>
                                                         <th>Rank</th>
                                                         {{-- <th>Label</th>
                                                         <th>Keterangan</th> --}}
@@ -65,11 +99,12 @@
                                                     <tbody>
                                                         @foreach ($alter as $a => $alt)
                                                                 <tr>
-                                                                    <td>{{$a}}</td>
+                                                                    <td>{{$a+1}}</td>
                                                                     <td>{{$alt->nama}}</td>
                                                                     <td>{{$corefactor[$user->id][$alt->id]}}</td>
                                                                     <td>{{$secondaryfactor[$user->id][$alt->id]}}</td>
                                                                     <td>{{$total[$user->id][$alt->id]}}</td>
+                                                                    <td>{{classify(($nilai->where('id_user', $user->id)->where('id_alternatif', $alt->id)->where('id_kriteria', 2)->first()->nilai ?? 5), ($nilai->where('id_user', $user->id)->where('id_alternatif', $alt->id)->where('id_kriteria', 3)->first()->nilai ?? 5), ($nilai->where('id_user', $user->id)->where('id_alternatif', $alt->id)->where('id_kriteria', 4)->first()->nilai ?? 5))}}</td>
                                                                     <td>{{$totalrank[$user->id][$alt->id]}}</td>
                                                                     {{-- <td>
                                                                         @if ($total[$user->id][$alt->id] >= 1.00 && $total[$user->id][$alt->id] <=1.79)
@@ -176,88 +211,10 @@
                         </div>
                       </div>
                     </div>
-                  </section>
+                </section>
 
             </section>
 
-                        <!-- ChartJS section start -->
-                        <section id="chartjs-chart">
-                            <div class="row">
-                                <!--Bar Chart Start -->
-                                <div class="col-xl-6 col-12">
-                                    <div class="card">
-                                    <div
-                                        class="card-header d-flex justify-content-between align-items-sm-center align-items-start flex-sm-row flex-column"
-                                    >
-                                        <div class="header-left">
-                                        <h4 class="card-title">Borda</h4>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas class="bar-chart-ex chartjs" data-height="600"></canvas>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-12">
-                                    <div class="card">
-                                        <div class="card-header d-flex justify-content-between align-items-sm-center align-items-start flex-sm-row flex-column">
-                                            <div class="header-left">
-                                                <h4 class="card-title">Borda</h4>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <table class="bordatable user-list-table table">
-                                                <thead>
-                                                    <tr>
-                                                    <th>No.</th>
-                                                    <th>Alternatif</th>
-                                                    <th>Nilai Borda</th>
-                                                    <th>Ranking Akhir</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @php
-                                                        $i = 0;
-                                                    @endphp
-                                                    @foreach ($alter as $a => $alt)
-                                                            <tr @if ($i <= 4)
-                                                                style="background-color: lightgreen"
-                                                            @else
-                                                                style="background-color: lightcoral"
-                                                            @endif>
-                                                                <td>{{$a+1}}</td>
-                                                                <td>{{$alt->nama}}</td>
-                                                                <td>{{$alt->nilaiborda}}</td>
-                                                                <td>{{$bordarank[$alt->id]}}</td>
-                                                            </tr>
-                                                            @php
-                                                                $i++;
-                                                            @endphp
-                                                    @endforeach
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                                                <!-- Bar Chart End -->
-            @if (session()->get('success'))
-            <div class="alert alert-success" role="alert">
-                <h4 class="alert-heading">Sukses</h4>
-                <div class="alert-body">
-                    {{session('success')}}
-                </div>
-              </div>
-            @elseif (session()->get('error'))
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Error</h4>
-                <div class="alert-body">
-                    {{session('error')}}
-                </div>
-              </div>
-            @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
         </div>
     </div>
 </div>
@@ -286,7 +243,6 @@
     $(document).ready(function(){
         const table = $('.wptable').DataTable({
             searching: false, paging: false, info: false,
-            order: [[5, 'asc']]
         })
         });
 
@@ -297,91 +253,4 @@
         })
         });
 
-</script>
-
-<script>
-    $(window).on("load", (function () {
-    var t = $(".bar-chart-ex"),
-    p = "#836AF9",
-        b = "#28dac6",
-        C = "#ffe802",
-        u = "#2c9aff",
-        h = "#84D0FF",
-        y = "#EDF1F4",
-        g = "rgba(0, 0, 0, 0.25)",
-        w = "#666ee8",
-        f = "#ff4961",
-        x = "#6e6b7b",
-        k = "rgba(200, 200, 200, 0.2)";
-
-        if (t.length) new Chart(t, {
-    type: "horizontalBar", // Change the chart type to horizontalBar
-    options: {
-        elements: {
-            rectangle: {
-                borderWidth: 2,
-                borderSkipped: "bottom"
-            }
-        },
-        responsive: !0,
-        maintainAspectRatio: !0,
-        responsiveAnimationDuration: 500,
-        legend: {
-            display: !1
-        },
-        tooltips: {
-            shadowOffsetX: 1,
-            shadowOffsetY: 1,
-            shadowBlur: 8,
-            shadowColor: g,
-            backgroundColor: window.colors.solid.white,
-            titleFontColor: window.colors.solid.black,
-            bodyFontColor: window.colors.solid.black
-        },
-        scales: {
-            yAxes: [{ // Swap xAxes and yAxes
-                display: !0,
-                gridLines: {
-                    display: !0,
-                    color: k,
-                    zeroLineColor: k
-                },
-                scaleLabel: {
-                    display: !1
-                },
-                ticks: {
-                    fontColor: x
-                }
-            }],
-            xAxes: [{ // Swap xAxes and yAxes
-                display: !0,
-                gridLines: {
-                    color: k,
-                    zeroLineColor: k
-                },
-                ticks: {
-                    stepSize: 5,
-                    min: 0,
-                    max: {{max($nilaiborda)}},
-                    fontColor: x
-                }
-            }]
-        }
-    },
-    data: {
-        labels: [@foreach($alter as $a => $alt)"{{$alt->nama}}",@endforeach],
-        datasets: [{
-            data: [@foreach($alter as $b) {{$b->nilaiborda}}, @endforeach],
-            barThickness: 15,
-            backgroundColor: function(context) {
-                // Atur warna berdasarkan posisi
-                return context.dataIndex < 5 ? 'aquamarine' : 'lightcoral';
-            },
-            borderColor: "transparent"
-        }]
-    }
-});
-
-t.height = 600;
-}));
 </script>

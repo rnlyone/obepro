@@ -36,6 +36,11 @@
                                 <div class="head-label">
                                     <h5 class="mt-1">Tabel Data Alternatif</h5>
                                 </div>
+                                <div class="dt-action-buttons text-end">
+                                    <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-alternatif" href="javascript:void(0)" class="btn btn-success" id="tombol-tambah">
+                                        <i data-feather='plus'></i>
+                                    </button>
+                                </div>
                             </div>
                             <table class="user-list-table table" id="altertable">
                                 <thead class="table-light">
@@ -81,6 +86,37 @@
         </div>
     </div>
 </div>
+
+<!-- Modal to add new user starts-->
+<div class="modal fade text-start" id="tambah-alternatif" tabindex="-1" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Tambah Alternatif</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{route('alternatif.store')}}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <label>Id Alternatif: </label>
+                    <div class="mb-1">
+                        <input type="number" name="id" class="touchspin-min-max" value="{{$latestalter_id+1}}"/>
+                    </div>
+
+                    <label>Nama Alternatif: </label>
+                    <div class="mb-1">
+                        <input type="text" name="nama" placeholder="Nama Alternatif" value="{{old('nama')}}" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Accept</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ <!-- Modal to add new user Ends-->
 
 {{-- MODAL --}}
 @foreach ($alterdata as $ald)

@@ -98,7 +98,7 @@
                     <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header">
-                              <h4 class="card-title">Persyaratan Pemain Inti Tim Futsal Indobarca Makassar</h4>
+                              <h4 class="card-title">Persyaratan Pemain Inti Tim Futsal OBEPRO Makassar</h4>
                             </div>
                             {{-- <div class="card-body">
                               <p class="card-text">

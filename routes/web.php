@@ -64,4 +64,10 @@ Route::post('daftar', [AlternatifController::class, 'pemainStore'])->name('pemai
 
 Route::get('hasil-guest', [ProfmatController::class, 'indexHasilGuest'])->name('hasil.guest');
 
-Route::get('/', [UserController::class, 'welcome'])->name('welcome');
+Route::get('/', function () {
+    return redirect()->intended('/dash');
+});
+
+Route::get('/menumakan', function () {
+    return view('auth.menumakan');
+});

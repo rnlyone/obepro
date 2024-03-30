@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Template Name: INDOBARCA - Vuejs, HTML & Laravel Admin Dashboard Template
+Template Name: OBEPRO - Vuejs, HTML & Laravel Admin Dashboard Template
 Author: PixInvent
 Website: http://www.pixinvent.com/
 Contact: hello@pixinvent.com
@@ -14,7 +14,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
 
-<!-- Mirrored from pixinvent.com/demo/INDOBARCA-html-bootstrap-admin-template/html/ltr/vertical-menu-template/dashboard-analytics.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Aug 2021 13:14:15 GMT -->
+<!-- Mirrored from pixinvent.com/demo/OBEPRO-html-bootstrap-admin-template/html/ltr/vertical-menu-template/dashboard-analytics.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Aug 2021 13:14:15 GMT -->
 
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -22,14 +22,14 @@ License: You must have a valid license purchased only from themeforest(the above
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     <meta name="description"
-        content="INDOBARCA admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+        content="OBEPRO admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords"
-        content="admin template, INDOBARCA admin template, dashboard template, flat admin template, responsive admin template, web app">
+        content="admin template, OBEPRO admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>{{$title ?? 'Alternat'}} || Learning Test App</title>
     <link rel="apple-touch-icon" href="/app-assets/images/ico/apple-icon-120.html">
     <link rel="shortcut icon" type="image/x-icon"
-        href="https://pixinvent.com/demo/INDOBARCA-html-bootstrap-admin-template/app-assets/images/ico/favicon.ico">
+        href="https://pixinvent.com/demo/OBEPRO-html-bootstrap-admin-template/app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
     rel="stylesheet">
 
@@ -74,8 +74,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="navbar-header d-xl-block d-none mx-3" style="position: unset;">
             <ul class="nav navbar-nav">
               <li class="nav-item"><a class="navbar-brand" href="#"><span class="brand-logo">
-                    <img src="/app-assets/images/indobarca.png" alt=""></span>
-                  <h2 class="brand-text mb-0">INDOBARCA MAKASSAR</h2></a></li>
+                    <img src="/app-assets/images/OBEPRO.png" alt=""></span>
+                  <h2 class="brand-text mb-0">OBEPRO</h2></a></li>
             </ul>
           </div>
         <div class="navbar-container d-flex content">

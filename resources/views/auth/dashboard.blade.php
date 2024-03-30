@@ -8,26 +8,36 @@
         <div class="content-header row">
         </div>
         <div class="content-body">
+
+            <!-- Greetings Card starts -->
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card card-congratulations">
+                    <div class="card-body text-center">
+                        <img src="/app-assets/images/elements/decore-left.png" class="congratulations-img-left"
+                            alt="card-img-left" />
+                        <img src="/app-assets/images/elements/decore-right.png"
+                            class="congratulations-img-right" alt="card-img-right" />
+                        <div class="avatar avatar-xl bg-primary shadow">
+                            <div class="avatar-content">
+                                <i data-feather="award" class="font-large-1"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h1 class="mb-1 text-white">Selamat Datang {{auth()->user()->name}},</h1>
+                            <p class="card-text m-auto w-75">
+                                Selamat datang di Aplikasi OBEPRO, Sistem Pendukung Keputusan Penentuan Rekomendasi Pola Makan Bagi Masyarakat yang Mengalami Obesitas
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Greetings Card ends -->
             <!-- Dashboard Analytics Start -->
             <section id="dashboard-analytics">
                 <div class="row match-height">
-                    <!-- Medal Card -->
-                    <div class="col-xl-4 col-md-6 col-12">
-                      <div class="card card-congratulation-medal">
-                        <div class="card-body">
-                          <h5>Selamat Datang 🎉 {{auth()->user()->name}}!</h5>
-                          <p class="card-text font-small-3">Sistem Optimalisasi Pemilihan Pemain Futsal</p>
-                          @if (auth()->user()->role == 'user')
-                            <a href="{{route('penilaian.index')}}" class="btn btn-primary waves-effect waves-float waves-light">Beri Penilaian</a>
-                          @endif
-                          <img src="../../../app-assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic">
-                        </div>
-                      </div>
-                    </div>
-                    <!--/ Medal Card -->
 
                     <!-- Statistics Card -->
-                    <div class="col-xl-8 col-md-6 col-12">
+                    <div class="col-xl-12 col-md-12 col-12">
                       <div class="card card-statistics">
                         <div class="card-header">
                           <h4 class="card-title">Statistik</h4>
@@ -46,7 +56,7 @@
                                 </div>
                                 <div class="my-auto">
                                   <h4 class="fw-bolder mb-0">{{$jmlalter}}</h4>
-                                  <p class="card-text font-small-3 mb-0">Pemain</p>
+                                  <p class="card-text font-small-3 mb-0">Pasien</p>
                                 </div>
                               </div>
                             </div>
@@ -95,45 +105,6 @@
                     </div>
                     <!--/ Statistics Card -->
                   </div>
-
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="card">
-                            <div class="card-header">
-                              <h4 class="card-title">Persyaratan Pemain Inti Tim Futsal Indobarca Makassar</h4>
-                            </div>
-                            {{-- <div class="card-body">
-                              <p class="card-text">
-                                Add <code>.table-bordered</code> for borders on all sides of the table and cells. For Inverse Dark Table, add
-                                <code>.table-dark</code> along with <code>.table-bordered</code>.
-                              </p>
-                            </div> --}}
-                            <div class="table-responsive">
-                              <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        @foreach ($kriteria as $krit)
-                                            <th>{{$krit->nama}}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        @foreach ($kriteria as $krit)
-                                            <td style="vertical-align:top;padding-top:25px">
-                                                @foreach ($krit->subkriteria as $subkriteria)
-                                                    {{$subkriteria->nama}}<br>________<br>
-                                                @endforeach
-                                            </td>
-                                        @endforeach
-                                    </tr>
-                                </tbody>
-
-                              </table>
-                            </div>
-                          </div>
-                    </div>
-                </div>
 
                 @if (auth()->user()->role == 'admin')
                     {{-- mini button start --}}
