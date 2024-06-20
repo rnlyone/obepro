@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Siswa;
+use App\Models\Alterkrit;
 use Illuminate\Http\Request;
 
-class SiswaController extends Controller
+class AlterkritController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class SiswaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Siswa  $siswa
+     * @param  \App\Models\Alterkrit  $alterkrit
      * @return \Illuminate\Http\Response
      */
-    public function show(Siswa $siswa)
+    public function show(Alterkrit $alterkrit)
     {
         //
     }
@@ -52,10 +52,10 @@ class SiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Siswa  $siswa
+     * @param  \App\Models\Alterkrit  $alterkrit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Siswa $siswa)
+    public function edit(Alterkrit $alterkrit)
     {
         //
     }
@@ -64,10 +64,10 @@ class SiswaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Siswa  $siswa
+     * @param  \App\Models\Alterkrit  $alterkrit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Siswa $siswa)
+    public function update(Request $request, Alterkrit $alterkrit)
     {
         //
     }
@@ -75,10 +75,10 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Siswa  $siswa
+     * @param  \App\Models\Alterkrit  $alterkrit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Siswa $siswa)
+    public function destroy(Alterkrit $alterkrit)
     {
         //
     }

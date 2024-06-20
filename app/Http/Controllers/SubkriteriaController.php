@@ -49,14 +49,27 @@ class SubkriteriaController extends Controller
             ]
         ]);
 
+        $kriteria = Kriteria::find($req->id_kriteria);
+
         try {
-            Subkriteria::create([
-                'id_kriteria' => $req->id_kriteria,
-                'nama' => $req->nama,
-                'bobot' => $req->bobot
-            ]);
+            if ($kriteria->tipe == 'range') {
+                Subkriteria::create([
+                    'id_kriteria' => $req->id_kriteria,
+                    'nama' => $req->nama,
+                    'range_awal' => $req->range_awal,
+                    'range_akhir' => $req->range_akhir,
+                    'bobot' => $req->bobot
+                ]);
+            }else {
+                Subkriteria::create([
+                    'id_kriteria' => $req->id_kriteria,
+                    'nama' => $req->nama,
+                    'bobot' => $req->bobot
+                ]);
+            }
             return back()->with('success', 'Sub-kriteria Berhasil Dibuat.');
         } catch (\Throwable $th) {
+            dd($th);
             return back()->with('error', 'Maaf, Terdapat Kesalahan');
         }
     }
@@ -81,7 +94,22 @@ class SubkriteriaController extends Controller
     public function editsubkriteria(Request $req)
     {
         // dd($req);
+        $kriteria = Kriteria::find(Subkriteria::where('id', $req->idsub)->first()->id_kriteria);
+        // dd($kriteria);
         try {
+            if ($kriteria->tipe == 'range') {
+                Subkriteria::where('id', $req->idsub)->update([
+                    'nama' => $req->nama,
+                    'range_awal' => $req->range_awal,
+                    'range_akhir' => $req->range_akhir,
+                    'bobot' => $req->bobot
+                ]);
+            }else {
+                Subkriteria::where('id', $req->idsub)->update([
+                    'nama' => $req->nama,
+                    'bobot' => $req->bobot
+                ]);
+            }
             Subkriteria::where('id', $req->idsub)->update([
                 'nama' => $req->nama,
                 'bobot' => $req->bobot

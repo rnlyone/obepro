@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSiswasTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateSiswasTable extends Migration
      */
     public function up()
     {
-        Schema::create('siswas', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('alternatifs', function (Blueprint $table) {
+            $table->text('caption');
+            $table->text('catatan');
         });
     }
 
@@ -26,6 +26,8 @@ class CreateSiswasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('siswas');
+        Schema::table('alternatifs', function (Blueprint $table) {
+            //
+        });
     }
-}
+};

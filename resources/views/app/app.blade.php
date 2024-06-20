@@ -205,7 +205,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     @else
                         <li class="{{$penilaian_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/penilaian"><i
                             data-feather="file-text"></i><span class="menu-title text-truncate"
-                            data-i18n="Penilaian">Penilaian</span></a>
+                            data-i18n="Penilaian">Informasi Diri</span></a>
                         </li>
                         <li class="{{$hasil_active ?? ''}} nav-item"><a class="d-flex align-items-center" href="/hasil"><i
                             data-feather="archive"></i><span class="menu-title text-truncate"

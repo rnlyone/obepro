@@ -7,7 +7,10 @@ use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Exception;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class AlternatifController extends Controller
 {
@@ -38,7 +41,12 @@ class AlternatifController extends Controller
                 </button>';
                 return $button;
             })
-            ->rawColumns(['action'])
+            ->addColumn('gambar', function($data){
+                $gambarUrl = asset('storage/gambar/' . $data->gambar);
+                $image = '<img style="max-width: 100%" src="'.$gambarUrl.'" alt="">';
+                return $image;
+            })
+            ->rawColumns(['action', 'gambar'])
             ->addIndexColumn()
             ->make(true);
         }
@@ -74,79 +82,99 @@ class AlternatifController extends Controller
      */
     public function store(Request $req)
     {
-        $req->validate([
-            'id' => [
-                'unique:App\Models\Alternatif,id',
-                'required'
-            ],
-            'nama' => [
-                'unique:App\Models\Alternatif,nama',
-                'required'
-            ]
+        // dd($req->hasFile('gambar'));
+        $validator = FacadesValidator::make($req->all(), [
+            'id' => 'required|unique:alternatifs,id',
+            'nama' => 'required|unique:alternatifs,nama',
+            'gambar' => 'sometimes|image|mimes:jpeg,png,jpg,gif', // Adjust as per your requirements
+            'caption' => 'required',
+            'catatan' => 'required'
         ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         try {
-            Alternatif::create([
-                'id' => $req->id,
-                'nama' => $req->nama
-            ]);
+            // Handle file upload
+            if ($req->hasFile('gambar')) {
+                $gambar = $req->file('gambar');
+                $gambar_name = time() . '_' . $gambar->getClientOriginalName();
+                $gambar->storeAs('public/gambar', $gambar_name); // Adjust storage path as needed
+
+                // Create alternatif with image
+                $alternatif = Alternatif::create([
+                    'id' => $req->id,
+                    'nama' => $req->nama,
+                    'gambar' => $gambar_name, // Save image name to database
+                    'caption' => $req->caption,
+                    'catatan' => $req->catatan
+                ]);
+            } else {
+                // Create alternatif without image
+                Alternatif::create([
+                    'id' => $req->id,
+                    'nama' => $req->nama,
+                    'caption' => $req->caption,
+                    'catatan' => $req->catatan
+                ]);
+            }
+
             return back()->with('success', 'Alternatif Berhasil Dibuat.');
-        } catch (Exception $e) {
-            return back()->with('error', 'Maaf, Terdapat Kesalahan', $e);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Maaf, Terdapat Kesalahan: ' . $e->getMessage());
         }
     }
 
     public function editalternatif(Request $req)
     {
-        $validatedData = $req->validate([
+        // Validate incoming request
+        $validator = FacadesValidator::make($req->all(), [
             'id' => [
-                'unique:App\Models\Alternatif,id,'.$req->idedit,
-                'required'
+                'required',
+                'string',
+                'unique:alternatifs,id,' . $req->idedit,
             ],
             'nama' => 'required|string',
-            'tempatlahir' => 'required|string',
-            'borndate' => 'required|date',
-            'alamat' => 'required|string',
-            'nohp' => 'required|string',
-            'email' => 'required|email',
+            'gambar' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as per your requirements
         ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         try {
-            Alternatif::findOrFail($req->id)->update($validatedData);
+            // Find the alternatif by ID
+            $alternatif = Alternatif::findOrFail($req->idedit);
+
+            // Update the alternatif data
+            $alternatif->id = $req->id;
+            $alternatif->nama = $req->nama;
+            $alternatif->caption = $req->caption;
+            $alternatif->catatan = $req->catatan;
+
+            // Handle image update
+            if ($req->hasFile('gambar')) {
+                $gambar = $req->file('gambar');
+                $gambar_name = time() . '_' . $gambar->getClientOriginalName();
+                $gambar->storeAs('public/gambar', $gambar_name); // Adjust storage path as needed
+
+                // Delete old image if necessary
+                Storage::delete('public/gambar/' . $alternatif->gambar);
+
+                // Update alternatif with new image
+                $alternatif->gambar = $gambar_name;
+            }
+
+            // Save the alternatif
+            $alternatif->save();
+
             return back()->with('success', 'Alternatif Berhasil Diedit.');
-        } catch (Exception $e) {
-            return back()->with('error', 'Maaf Alternatif Gagal Diedit');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Maaf, Terdapat Kesalahan: ' . $e->getMessage());
         }
     }
 
-    public function pemainStore(Request $request)
-    {
-        // Validasi input form jika diperlukan
-        $validatedData = $request->validate([
-            'nama' => 'required|string',
-            'tempatlahir' => 'required|string',
-            'borndate' => 'required|date',
-            'alamat' => 'required|string',
-            'nohp' => 'required|string',
-            'email' => 'required|email',
-            // Tambahkan validasi untuk kolom-kolom baru jika diperlukan
-        ]);
-
-        // Simpan data ke dalam database
-        Alternatif::create($validatedData);
-
-        return back()->with('success', 'Pemain berhasil disimpan.');
-
-    }
-
-    public function pemainForm(Request $request)
-    {
-        $alternatif = Alternatif::all();
-
-        return view('daftar', [
-            'alternatif' => $alternatif,
-        ]);
-    }
 
     /**
      * Display the specified resource.
@@ -190,7 +218,6 @@ class AlternatifController extends Controller
      */
     public function destroy(Alternatif $alternatif, $id)
     {
-        Penilaian::where('id_alternatif', $id)->delete();
         Alternatif::where('id', $id)->delete();
         return back()->with('success', 'Alternatif Berhasil Dihapus.');
     }

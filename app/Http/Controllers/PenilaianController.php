@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alterkrit;
 use App\Models\Alternatif;
 use App\Models\Kriteria;
 use App\Models\Penilaian;
@@ -21,61 +22,124 @@ class PenilaianController extends Controller
      */
     public function index(Request $request)
     {
-
-        // dd($nilaidata);
-        if (auth()->user()->role == 'admin'){
+        if (auth()->user()->role == 'guru'){
             return abort(403, 'Maaf, Halaman Ini Bukan Untuk Anda');
         }
 
-        // try {
-            // $alterdata = Alternatif::whereHas('kelas', function(Builder $query) {
-            //     $query->where('walikelas', auth()->user()->id);
-            // }, '<=', 1)->get();
-            #kode untuk mendapatkan list alternatif yang di ampu oleh walikelas terkait.
-            $alterdata = Alternatif::all();
-            // dd($alterdata);
-        // } catch (\Throwable $th) {
-        //     $alterdata = Alternatif::all();
-        // }
+        $kriteriadata = Kriteria::all();
+        $alternatifdata = Alternatif::all();
+        $alterkrit = Alterkrit::all();
 
-        // $alterdata = Alternatif::all();
-        $kritdata = Kriteria::all();
-        $subsdata = Subkriteria::all();
-
-        #datatable
         if ($request->ajax()){
-            return DataTables::of($alterdata)
-            ->addColumn('action', function($data){
-                $button = '
-                <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaledit'.$data->id.'" type="button" class="edit-post btn btn-icon btn-info">
-                    <i data-feather="edit-3"></i>
-                </button>';
-                return $button;
-            })
-            ->addColumn('noid', function($data){
-                $id = 'A'.$data->id;
-                return $id;
-            })
-            ->addColumn('status', function($data){
+            return Datatables::of($kriteriadata)
+            ->addColumn('action', function($data) {
+                if ($data->tipe == 'range') {
+                    // Ambil subkriteria pertama sebagai contoh
+                    $subkritfirst = $data->subkriterias->first();
+                    $subkritlast = $data->subkriterias->last();
+                    if ($subkritfirst) {
+                        $min = $subkritfirst->range_awal;
 
-                #listing untuk status sudah selesai dinilai atau belum
-                $sumkrit = Kriteria::count();
-                $sumnilai = Penilaian::where('id_alternatif', $data->id)->where('id_user', auth()->user()->id)->get()->count();
+                    } else {
+                        $min = 0;
+                         // Default range jika subkriteria tidak ditemukan
+                    }
+                    if ($subkritlast) {
+                        $max = $subkritlast->range_akhir;
+                    }else {
+                        $max = 1000;
+                    }
 
-                if (($sumkrit-$sumnilai) == 0) {
-                    $status = '<span class="badge bg-success">Selesai</span>';
+                    // Cek nilai sebelumnya dari tabel penilaian
+                    $nilaiSebelumnya = null;
+                    try {
+                        $nilaiSebelumnya = Penilaian::where('id_user', auth()->user()->id)
+                                        ->where('id_kriteria', $data->id)
+                                        ->first()->inputan;
+                    } catch (\Throwable $th) {
+                        $nilaiSebelumnya = null;
+                    }
+
+                    return '<div class="mb-1">
+                        <input type="number" name="inputan['.$data->id.']['.auth()->user()->id.']" value="'.($nilaiSebelumnya ?? '').'" class="form-control range-input" data-kriteria-id="'.$data->id.'" min="'.$min.'" max="'.$max.'" inputmode="numeric" />
+                    </div>';
+
                 } else {
-                    $status = '<span class="badge bg-danger">Belum ('.($sumnilai).')</span>';
+                    $subkrits = $data->subkriterias;
+                    try {
+                        $nilaidata = Penilaian::where('id_user', auth()->user()->id)
+                                    ->where('id_kriteria', $data->id)
+                                    ->first()->id_subkriteria;
+                    } catch (\Throwable $th) {
+                        $nilaidata = null;
+                    }
+
+                    $dropdown = '<select name="inputan['.$data->id.']['.auth()->user()->id.']" class="form-select" id="basicSelect">
+                    <option value=""';
+                    if ($nilaidata == null) {
+                        $dropdown .= 'selected="selected"';
+                    }
+                    $dropdown .= '>Pilih</option>';
+                    foreach ($subkrits as $sbd) {
+                        $dropdown .= '<option value="'.$sbd->id.'"';
+                        if ($sbd->id == $nilaidata) {
+                            $dropdown .= 'selected="selected"';
+                        }
+                        $dropdown .= '>'.$sbd->bobot.' | '.$sbd->nama.'</option>';
+                    }
+                    $dropdown .= '</select>';
+                    return $dropdown;
                 }
-                return $status;
             })
-            ->rawColumns(['action', 'status', 'noid'])
+            ->addColumn('klasifikasi', function($data) {
+                if ($data->tipe != 'range') {
+                    return '';
+                }
+
+                $subkrits = $data->subkriterias;
+                $nilaidata = null;
+
+                try {
+                    $nilaidata = Penilaian::where('id_user', auth()->user()->id)
+                                          ->where('id_kriteria', $data->id)
+                                          ->first()->id_subkriteria;
+                } catch (\Throwable $th) {
+                    $nilaidata = null;
+                }
+
+                $dropdown = '<select name="'.$data->id.'" class="form-select klasifikasi-select" id="klasifikasiSelect_'.$data->id.'" data-kriteria-id="'.$data->id.'" disabled>
+                <option value=""';
+                if ($nilaidata == null) {
+                    $dropdown .= ' selected="selected"';
+                }
+                $dropdown .= '>Pilih</option>';
+                foreach ($subkrits as $sbd) {
+                    $dropdown .= '<option value="'.$sbd->id.'" data-range-awal="'.$sbd->range_awal.'" data-range-akhir="'.$sbd->range_akhir.'"';
+                    if ($nilaidata == $sbd->id) {
+                        $dropdown .= ' selected="selected"';
+                    }
+                    $dropdown .= '>';
+                    $dropdown .= $sbd->bobot.' | '.$sbd->nama.'</option>';
+                }
+                $dropdown .= '</select>';
+                return $dropdown;
+            })
+            ->addColumn('kode', function($data){
+                $kodekriteria = 'C'.$data->id;
+                return $kodekriteria;
+            })
+        ->rawColumns(['action', 'klasifikasi'])
             ->addIndexColumn()
             ->make(true);
         }
 
+        try {
+            $latestkriteria_id = Kriteria::latest()->first()->id+1;
+        } catch (\Throwable $th) {
+            $latestkriteria_id = 0;
+        }
 
-        return view('auth.penilaian', ['alterdata' => $alterdata, 'kritdata' => $kritdata, 'subsdata' => $subsdata]);
+        return view('auth.penilaian', ['kriteriadata' => $kriteriadata, 'latestkriteria_id' => $latestkriteria_id, 'alternatifdata' => $alternatifdata, 'alterkritdata' => $alterkrit]);
     }
 
     /**
@@ -96,8 +160,78 @@ class PenilaianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the input data
+        $validatedData = $request->validate([
+            'inputan' => 'required|array',
+            'inputan.*.*' => 'required'
+        ]);
+
+        $id_user = auth()->user()->id;
+
+        // Check if inputan exists and is an array
+        if (!isset($request->inputan) || !is_array($request->inputan)) {
+            return back()->with('error', 'Invalid input data.');
+        }
+
+        foreach ($request->inputan as $id_kriteria => $inputan) {
+            // Check if each inputan item is an array
+            if (!is_array($inputan)) {
+                continue;
+            }
+
+            foreach ($inputan as $id_alternatif => $value) {
+                // Find the kriteria by ID
+                $kriteria = Kriteria::find($id_kriteria);
+
+                if (!$kriteria) {
+                    continue;
+                }
+
+                if ($kriteria->tipe == 'range') {
+                    $nilai = floatval($value);
+                    $subkriteria = Subkriteria::where('id_kriteria', $id_kriteria)
+                        ->where('range_awal', '<=', $nilai)
+                        ->where('range_akhir', '>=', $nilai)
+                        ->first();
+
+                    if ($subkriteria) {
+                        Penilaian::updateOrCreate(
+                            [
+                                'id_user' => $id_user,
+                                'id_kriteria' => $id_kriteria
+                            ],
+                            [
+                                'id_subkriteria' => $subkriteria->id,
+                                'inputan' => $nilai,
+                                'nilai' => $subkriteria->bobot
+                            ]
+                        );
+                    }
+                } else {
+                    $subkriteria = Subkriteria::find($value);
+
+                    if ($subkriteria) {
+                        Penilaian::updateOrCreate(
+                            [
+                                'id_user' => $id_user,
+                                'id_kriteria' => $id_kriteria
+                            ],
+                            [
+                                'id_subkriteria' => $subkriteria->id,
+                                'inputan' => null,
+                                'nilai' => $subkriteria->bobot
+                            ]
+                        );
+                    }
+                }
+            }
+        }
+
+        return back()->with('success', 'Penilaian berhasil disimpan.');
     }
+
+
+
 
     /**
      * Display the specified resource.

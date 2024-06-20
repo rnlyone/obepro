@@ -1,9 +1,5 @@
-@include('app.app', ['penilaian_active' => 'active', 'title' => 'Penilaian'])
+@include('app.app', ['penilaian_active' => 'active', 'title' => 'Data Informasi Diri'])
 
-@php
-    use App\Models\Subkriteria;
-    use App\Models\Penilaian;
-@endphp
 <!-- BEGIN: Content-->
 <div class="app-content content ">
     <div class="content-overlay"></div>
@@ -17,12 +13,12 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Penilaian</h2>
+                            <h2 class="content-header-title float-start mb-0">Data Informasi Diri</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="/">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="alternatif">Penilaian</a>
+                                    <li class="breadcrumb-item"><a href="/penilaian">Data Informasi Diri</a>
                                     </li>
                                 </ol>
                             </div>
@@ -33,109 +29,67 @@
             <!-- Dashboard Analytics Start -->
             <section class="app-user-list">
                 <!-- list section start -->
+                @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error</h4>
+                    <div class="alert-body">
+                        {{$error}}
+                    </div>
+                  </div>
+                @endforeach
+                @endif
                 <div class="card">
                     <div style="margin: 10pt">
-                    <div class="card-datatable table-responsive pt-0">
-                        <div class="card-header p-0">
-                            <div class="head-label"><h5 class="mt-1">Tabel Penilaian</h5></div>
-                            <div class="dt-action-buttons text-end">
+                        <form action="{{route('penilaian.store')}}" method="post">
+                            @csrf
+                            <div class="card-datatable table-responsive pt-0">
+                                <div class="card-header p-0">
+                                    <div class="head-label"><h5 class="mt-1">Tabel Data Kriteria</h5></div>
+                                </div>
+                                <table class="user-list-table table" id="kriteriatable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Kode</th>
+                                            <th>Nama</th>
+                                            <th>Inputan</th>
+                                            <th>Klasifikasi</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
-                        </div>
-                        <table class="user-list-table table" id="altertable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Nama</th>
-                                    <th>status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                        </table>
+                            <div class="col-12 dt-action-buttons text-end">
+                                <button type="submit" class="btn btn-primary me-1 waves-effect waves-float waves-light">Simpan Perubahan</button>
+                            </div>
+                        </form>
                     </div>
-                    @if (session()->get('success'))
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">Sukses</h4>
-                        <div class="alert-body">
-                            {{session('success')}}
-                        </div>
-                      </div>
-                    @elseif (session()->get('error'))
-                    <div class="alert alert-danger" role="alert">
-                        <h4 class="alert-heading">Error</h4>
-                        <div class="alert-body">
-                            {{session('error')}}
-                        </div>
-                      </div>
-                    @endif
-
-                    </div>
-                    <!-- Modal to add new user Ends-->
                 </div>
                 <!-- list section end -->
             </section>
+            @if (session()->get('success'))
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Sukses</h4>
+                <div class="alert-body">
+                    {{session('success')}}
+                </div>
+              </div>
+            @elseif (session()->get('error'))
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Error</h4>
+                <div class="alert-body">
+                    {{session('error')}}
+                </div>
+              </div>
+            @endif
 
         </div>
     </div>
 </div>
-
-{{-- MODAL --}}
-@foreach ($alterdata as $ald)
-<div class="modal fade text-start" id="modaledit{{$ald->id}}" tabindex="-1" aria-labelledby="myModalLabel1"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Edit Penilaian {{$ald->nama}}</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="penilaian/edit" method="post">
-                @csrf
-                <input type="text" name="alternatifid" id="aldata" value="{{$ald->id}}" hidden>
-                <div class="modal-body">
-                    @foreach ($kritdata as $krd)
-                        <label>{{$krd->nama}} : </label>
-                        <div class="mb-1">
-                            @php
-                                $subdata = Subkriteria::where('id_kriteria', $krd->id)->orderBy('bobot', 'asc')->get();
-                                try {
-                                    $nilaidata = Penilaian::where('id_user', auth()->user()->id)
-                                                ->where('id_alternatif', $ald->id)
-                                                ->where('id_kriteria', $krd->id)
-                                                ->first()->id_subkriteria;
-                                } catch (\Throwable $th) {
-                                    $nilaidata = null;
-                                }
-                            @endphp
-                            <select name="{{$krd->id}}" class="form-select" id="basicSelect">
-                                <option value=""
-                              @if ($nilaidata == null)
-                                selected="selected"
-                              @endif>Pilih</option>
-                              @foreach ($subdata as $sbd)
-                              <option value="{{$sbd->id}}"
-                                @if ($sbd->id == $nilaidata)
-                                    selected="selected"
-                                @endif
-                                >{{$sbd->bobot}} | {{$sbd->nama}}</option>
-                              @endforeach
-                            </select>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Accept</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
- <!-- Modal to add new user Ends-->
-
-{{-- MODAL END --}}
-
-
 <!-- END: Content-->
+
+
+
 @include('app.footer')
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script src="{{asset('app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js')}}"></script>
@@ -150,14 +104,17 @@
         });
 
     $(document).ready(function(){
-        const table = $('#altertable').DataTable(
+        const table = $('#kriteriatable').DataTable(
             {
                 serverSide : true,
                 processing : true,
                 language : {
                     processing : "<div class='spinner-border text-primary' role='status'> <span class='visually-hidden'>Loading...</span></div>"
                 },
-                pageLength : 100,
+                ordering: false,
+                paging: false,
+                searching: false,
+
 
                 ajax : {
                     url: '{{ route('penilaian.index') }}',
@@ -165,10 +122,11 @@
                 },
 
                 columns : [
-                    {data: 'noid'},
+                    {data: 'id'},
+                    {data: 'kode'},
                     {data: 'nama'},
-                    {data: 'status'},
-                    {data: 'action'}
+                    {data: 'action'},
+                    {data: 'klasifikasi'}
                 ],
 
                 order: [[0, 'asc']],
@@ -177,4 +135,56 @@
                 }
             })
         });
+
+    </script>
+<script>
+    $(document).ready(function() {
+        // Handle change on range inputs using event delegation
+        $(document).on('input', '.range-input', function() {
+            var $input = $(this);
+            var kriteriaId = $input.data('kriteria-id');
+            var value = parseFloat($input.val());
+            var isValid = false;
+
+            var $dropdown = $('#klasifikasiSelect_' + kriteriaId);
+            if (!$dropdown.length) return;
+
+            // Iterate through options and select the appropriate one
+            $dropdown.find('option').each(function() {
+                var $option = $(this);
+                var rangeAwal = parseFloat($option.data('range-awal'));
+                var rangeAkhir = parseFloat($option.data('range-akhir'));
+
+                // Handle '>200' or '<70' cases
+                if (!isNaN(value)) {
+                    if ((isNaN(rangeAkhir) && value > rangeAwal) ||
+                        (isNaN(rangeAwal) && value < rangeAkhir) ||
+                        (value >= rangeAwal && value <= rangeAkhir)) {
+                        $option.prop('selected', true);
+                        isValid = true;
+                    } else {
+                        $option.prop('selected', false);
+                    }
+                }
+            });
+
+            // Validate input value and show error if not valid
+            if (!isValid) {
+                $input.addClass('is-invalid');
+                $dropdown.prop('disabled', true); // Disable dropdown if input is invalid
+            } else {
+                $input.removeClass('is-invalid');
+                $dropdown.prop('readonly', true); // Enable dropdown if input is valid
+            }
+        });
+    });
 </script>
+
+
+
+
+
+
+
+
+{{-- MODAL SPACES --}}

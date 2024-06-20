@@ -56,7 +56,8 @@
                                         <th>No.</th>
                                         <th>Kode</th>
                                         <th>Nama</th>
-                                        <th>jenis_kriteria</th>
+                                        <th>tipe</th>
+                                        <th>target</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -102,7 +103,7 @@
                 <div class="modal-body">
                     <label>Id Kriteria: </label>
                     <div class="mb-1">
-                        <input type="number" name="id" class="touchspin-min-max" value="{{$latestkriteria_id}}"/>
+                        <input type="number" name="id" class="touchspin-min-max" value="{{$latestkriteria_id+1}}"/>
                     </div>
 
                     <label>Nama Kriteria: </label>
@@ -114,14 +115,19 @@
                     <div class="mb-1">
                         <div class="demo-inline-spacing">
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="jenis_kriteria" id="inlineRadio1" value="cf" checked="">
-                              <label class="form-check-label" for="inlineRadio1">Core Factor</label>
+                              <input class="form-check-input" type="radio" name="tipe" id="inlineRadio1" value="range" checked="">
+                              <label class="form-check-label" for="inlineRadio1">Jangkauan (Range)</label>
                             </div>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="jenis_kriteria" id="inlineRadio2" value="sf">
-                              <label class="form-check-label" for="inlineRadio2">Secondary Factor</label>
+                              <input class="form-check-input" type="radio" name="tipe" id="inlineRadio2" value="kelas">
+                              <label class="form-check-label" for="inlineRadio2">Kelas</label>
                             </div>
                           </div>
+                    </div>
+
+                    <label>Target Kriteria: </label>
+                    <div class="mb-1">
+                        <input type="number" name="target" class="touchspin-min-max" value="0"/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -156,18 +162,72 @@
                     <div class="mb-1">
                         <div class="demo-inline-spacing">
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="jenis_kriteria" id="inlineRadio1" value="cf" checked="">
-                              <label class="form-check-label" for="inlineRadio1">Core Factor</label>
+                              <input class="form-check-input" type="radio" name="tipe" id="inlineRadio1" value="range" checked="">
+                              <label class="form-check-label" for="inlineRadio1">Range</label>
                             </div>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="jenis_kriteria" id="inlineRadio2" value="sf">
-                              <label class="form-check-label" for="inlineRadio2">Secondary Factor</label>
+                              <input class="form-check-input" type="radio" name="tipe" id="inlineRadio2" value="kelas">
+                              <label class="form-check-label" for="inlineRadio2">Kelas</label>
                             </div>
                           </div>
+                    </div>
+
+                    <label>Target Kriteria: </label>
+                    <div class="mb-1">
+                        <input type="number" name="target" class="touchspin-min-max" value="0"/>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Accept</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@foreach ($kriteriadata as $krd)
+<div class="modal fade text-start" id="modalfaktor{{$krd->id}}" tabindex="-1" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Penentuan Faktor {{$krd->nama}}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{route('kriteria.faktor.edit')}}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <input type="text" value="{{$krd->id}}" name="id" hidden>
+
+
+                    @foreach ($alternatifdata as $al)
+                        <label>{{ $al->nama }} :</label>
+                        <div class="mb-2">
+                            <div class="demo-inline-spacing">
+                                @php
+                                    // Cari data Alterkrit untuk id_alternatif dan id_kriteria tertentu
+                                    $alterkrit = \App\Models\Alterkrit::where('id_alternatif', $al->id)
+                                                                    ->where('id_kriteria', $krd->id)
+                                                                    ->first();
+                                @endphp
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="{{ $krd->id .'_'. $al->id }}" id="inlineRadio1" value="core"
+                                    @if ($alterkrit && $alterkrit->faktor == 'core') checked @endif>
+                                    <label class="form-check-label" for="inlineRadio1">Core Factor</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="{{ $krd->id .'_'. $al->id }}" id="inlineRadio2" value="secondary"
+                                    @if ($alterkrit && $alterkrit->faktor == 'secondary') checked @endif>
+                                    <label class="form-check-label" for="inlineRadio2">Secondary Factor</label>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -228,7 +288,8 @@
                     {data: 'id'},
                     {data: 'kode'},
                     {data: 'nama'},
-                    {data: 'jenis_krit'},
+                    {data: 'tipe'},
+                    {data: 'target'},
                     {data: 'action'}
                 ],
 

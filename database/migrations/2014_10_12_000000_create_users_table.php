@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
         $table->string('password');
             $table->string('decrypted_password');
-            $table->enum('role', ['admin', 'user']);
+            $table->enum('role', ['admin', 'pasien']);
             $table->rememberToken();
             $table->timestamps();
         });

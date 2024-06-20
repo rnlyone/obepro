@@ -12,11 +12,18 @@ class Kriteria extends Model
     protected $fillable = [
         'id',
         'nama',
-        'jenis_kriteria'
+        'tipe',
+        'satuan',
+        'target'
     ];
 
-    public function subkriteria()
+    public function subkriterias()
     {
         return $this->hasMany(Subkriteria::class, 'id_kriteria');
+    }
+
+    public function alterkrits()
+    {
+        return $this->hasMany('App\Models\Alterkrit', 'id_kriteria');
     }
 }

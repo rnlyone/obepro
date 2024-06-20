@@ -67,7 +67,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu  navbar-floating footer-static  " style="background-color: cornflowerblue" data-open="hover" data-menu="horizontal-menu" data-col="">
+<body class="horizontal-layout horizontal-menu  navbar-floating footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="">
 
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-fixed align-items-center navbar-shadow navbar-brand-center" data-nav="brand-center">

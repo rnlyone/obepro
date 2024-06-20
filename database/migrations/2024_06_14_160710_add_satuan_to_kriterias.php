@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('alternatifs', function (Blueprint $table) {
-            $table->string('gambar')->nullable();
+        Schema::table('kriterias', function (Blueprint $table) {
+            $table->string('satuan');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('alternatifs', function (Blueprint $table) {
+        Schema::table('kriterias', function (Blueprint $table) {
             //
         });
     }

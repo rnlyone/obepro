@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePenilaiansTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreatePenilaiansTable extends Migration
      */
     public function up()
     {
-        Schema::create('penilaians', function (Blueprint $table) {
+        Schema::create('alterkrits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user')->constrained('users');
+            $table->foreignId('id_alternatif')->constrained('alternatifs');
             $table->foreignId('id_kriteria')->constrained('kriterias');
-            $table->foreignId('id_subkriteria')->constrained('subkriterias');
-        $table->integer('inputan')->nullable();
-            $table->double('nilai');
+            $table->enum('faktor', ['core', 'secondary']);
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreatePenilaiansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penilaians');
+        Schema::dropIfExists('alterkrits');
     }
-}
+};

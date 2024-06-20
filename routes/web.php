@@ -26,7 +26,9 @@ use App\Models\User;
 
 Route::group(['middleware'=>['guest']], function(){
     Route::get('login', [UserController::class, 'indexLogin'])->name('login');
+    Route::get('register', [UserController::class, 'indexRegister'])->name('register');
     Route::post('login', [UserController::class, 'login'])->name('auth.login');
+    Route::post('register', [UserController::class, 'register'])->name('auth.register');
 });
 
 Route::group(['middleware'=>['auth']], function(){
@@ -39,6 +41,7 @@ Route::group(['middleware'=>['auth']], function(){
     Route::resource('kriteria', KriteriaController::class)->except('edit', 'destroy');
     Route::get('kriteria/destroy/{id}', [KriteriaController::class, 'destroy']);
     Route::post('kriteria/edit', [KriteriaController::class, 'editkriteria'])->name('kriteria.edit');
+    Route::post('kriteria/faktor', [KriteriaController::class, 'editfaktor'])->name('kriteria.faktor.edit');
 
     Route::resource('subkriteria', SubkriteriaController::class)->except('edit', 'destroy');
     Route::get('subkriteria/destroy/{id}', [SubkriteriaController::class, 'destroy']);
@@ -49,7 +52,7 @@ Route::group(['middleware'=>['auth']], function(){
     Route::post('user/edit', [UserController::class, 'edit']);
     Route::get('user/destroy/{id}', [UserController::class, 'destroy']);
 
-    Route::resource('penilaian', PenilaianController::class)->except(['destroy', 'edit', 'store', 'update']);
+    Route::resource('penilaian', PenilaianController::class)->except(['destroy', 'edit', 'update']);
     Route::post('penilaian/edit', [PenilaianController::class, 'editpenilaian']);
 
     Route::get('logout', [UserController::class, 'logout'])->name('auth.logout');

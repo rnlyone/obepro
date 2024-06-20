@@ -12,16 +12,19 @@ class Alternatif extends Model
     protected $fillable = [
         'id',
         'nama',
-        'tempatlahir',
-        'borndate',
-        'alamat',
-        'nohp',
-        'email',
+        'gambar',
+        'caption',
+        'catatan'
     ];
 
 
     public function penilaian()
     {
         return $this->hasMany('App\Models\Penilaian', 'id_alternatif');
+    }
+
+    public function alterkrits()
+    {
+        return $this->hasMany('App\Models\Alterkrit', 'id_alternatif');
     }
 }

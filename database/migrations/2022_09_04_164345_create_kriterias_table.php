@@ -16,7 +16,8 @@ class CreateKriteriasTable extends Migration
         Schema::create('kriterias', function (Blueprint $table) {
             $table->id();
             $table->text('nama');
-            $table->enum('jenis_kriteria', ['cf', 'sf']);
+            $table->enum('tipe', ['range', 'kelas']);
+            $table->integer('target');
             $table->timestamps();
         });
     }

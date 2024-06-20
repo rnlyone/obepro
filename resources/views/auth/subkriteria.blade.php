@@ -73,7 +73,7 @@
                     <div style="margin: 10pt">
                         <div class="card-datatable table-responsive pt-0">
                             <div class="card-header p-0">
-                                <div class="head-label"><h5 class="mt-1">Sub-Kriteria {{$krd->nama}} (C{{$krd->id}})</h5></div>
+                                <div class="head-label"><h5 class="mt-1">Sub-Kriteria {{$krd->nama}} (C{{$krd->id}}) | {{$krd->tipe}}</h5></div>
                                 <div class="dt-action-buttons text-end">
                                     <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-subkriteria{{$krd->id}}" href="javascript:void(0)" class="btn btn-info" id="tombol-tambah">
                                         <i data-feather='plus'></i>
@@ -85,6 +85,10 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama</th>
+                                        @if ($krd->tipe == 'range')
+                                        <th>Batas Bawah</th>
+                                        <th>Batas Atas</th>
+                                        @endif
                                         <th>Bobot</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -99,6 +103,10 @@
                                         <tr>
                                             <td>{{$num}}</td>
                                             <td>{{$sbd->nama}}</td>
+                                            @if ($krd->tipe == 'range')
+                                            <td>{{$sbd->range_awal}}</td>
+                                            <td>{{$sbd->range_akhir}}</td>
+                                            @endif
                                             <td>{{$sbd->bobot}}</td>
                                             <td>
                                                 <button data-toggle="modal" data-bs-toggle="modal" data-original-title="Edit" type="button" data-bs-target="#modaleditsub{{$sbd->id}}" type="button" class="edit-post btn btn-icon btn-info">
@@ -136,6 +144,17 @@
                                         <input type="text" name="nama" placeholder="Nama Sub Kriteria" value="" class="form-control" />
                                     </div>
 
+                                    @if ($krd->tipe == "range")
+                                    <label>Batas Bawah (<=): </label>
+                                    <div class="mb-1">
+                                        <input type="number" name="range_awal" value="{{old('range_awal')}}" class="form-control" />
+                                    </div>
+                                    <label>Batas Atas (>=): </label>
+                                    <div class="mb-1">
+                                        <input type="number" name="range_akhir" value="{{old('range_akhir')}}" class="form-control" />
+                                    </div>
+                                    @endif
+
                                     <label>Bobot Sub-Kriteria: </label>
                                     <div class="mb-1">
                                         <input type="text" name="bobot" class="touchspin" data-bts-step="1" value="0"/>
@@ -168,6 +187,18 @@
                                 <div class="mb-1">
                                     <input type="text" name="nama" placeholder="Nama Sub Kriteria" value="{{$sbd->nama}}" class="form-control" />
                                 </div>
+
+                                @if ($krd->tipe == "range")
+                                    <label>Batas Bawah (<=): </label>
+                                    <div class="mb-1">
+                                        <input type="number" name="range_awal" value="{{$sbd->range_awal}}" class="form-control" />
+                                    </div>
+                                    <label>Batas Atas (>=): </label>
+                                    <div class="mb-1">
+                                        <input type="number" name="range_akhir" value="{{$sbd->range_akhir}}" class="form-control" />
+                                    </div>
+                                @endif
+
                                 <label>Bobot Sub-Kriteria: </label>
                                     <div class="mb-1">
                                         <input type="text" name="bobot" class="touchspin" data-bts-step="1" value="{{$sbd->bobot}}"/>

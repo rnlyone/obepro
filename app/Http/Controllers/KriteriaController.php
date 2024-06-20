@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alterkrit;
+use App\Models\Alternatif;
 use App\Models\Kriteria;
 use App\Models\Subkriteria;
 use Exception;
@@ -22,6 +24,8 @@ class KriteriaController extends Controller
         }
 
         $kriteriadata = Kriteria::all();
+        $alternatifdata = Alternatif::all();
+        $alterkrit = Alterkrit::all();
 
         if ($request->ajax()){
             return Datatables::of($kriteriadata)
@@ -32,6 +36,10 @@ class KriteriaController extends Controller
                 </button>';
                 // $button .= '&nbsp;&nbsp;';
                 $button .= '
+                <button data-toggle="modal" data-bs-toggle="modal" name="faktor" data-original-title="faktor" data-bs-target="#modalfaktor'.$data->id.'" type="button" class="faktor btn btn-icon btn-secondary">
+                    <i data-feather="settings"></i>
+                </button>';
+                $button .= '
                 <button data-toggle="modal" data-bs-toggle="modal" name="delete" data-original-title="delete" data-bs-target="#modaldel'.$data->id.'" type="button" class="delete btn btn-icon btn-outline-danger">
                     <i data-feather="trash-2"></i>
                 </button>';
@@ -41,15 +49,7 @@ class KriteriaController extends Controller
                 $kodekriteria = 'C'.$data->id;
                 return $kodekriteria;
             })
-            ->addColumn('jenis_krit', function($data){
-                if($data->jenis_kriteria == 'cf'){
-                    $jenis = 'Core Factor';
-                }else {
-                    $jenis = 'Secondary Factor';
-                }
-                return $jenis;
-            })
-        ->rawColumns(['action', 'kode', 'jenis_krit'])
+        ->rawColumns(['action', 'kode'])
             ->addIndexColumn()
             ->make(true);
         }
@@ -60,7 +60,7 @@ class KriteriaController extends Controller
             $latestkriteria_id = 0;
         }
 
-        return view('auth.kriteria', ['kriteriadata' => $kriteriadata, 'latestkriteria_id' => $latestkriteria_id]);
+        return view('auth.kriteria', ['kriteriadata' => $kriteriadata, 'latestkriteria_id' => $latestkriteria_id, 'alternatifdata' => $alternatifdata, 'alterkritdata' => $alterkrit]);
     }
 
     /**
@@ -91,8 +91,12 @@ class KriteriaController extends Controller
                 'unique:App\Models\Kriteria,nama',
                 'required'
             ],
-            'jenis_kriteria' => [
+            'tipe' => [
                 'required'
+            ],
+            'target' => [
+                'required',
+                'numeric'
             ]
         ]);
 
@@ -100,10 +104,12 @@ class KriteriaController extends Controller
             Kriteria::create([
                 'id' => $req->id,
                 'nama' => $req->nama,
-                'jenis_kriteria' => $req->jenis_kriteria,
+                'tipe' => $req->tipe,
+                'target' => $req->target
             ]);
             return back()->with('success', 'Kriteria Berhasil Dibuat.');
         } catch (\Throwable $th) {
+            dd($th);
             return back()->with('error', 'Maaf, Terdapat Kesalahan');
         }
     }
@@ -142,13 +148,46 @@ class KriteriaController extends Controller
             // dd($req);
             Kriteria::where('id', $req->id)->update([
                 'nama' => $req->nama,
-                'jenis_kriteria' => $req->jenis_kriteria,
+                'tipe' => $req->tipe,
+                'target' => $req->target
             ]);
             return back()->with('success', 'Kriteria Berhasil Diedit.');
         }catch (Exception $e) {
             return back()->with('error', 'Maaf, Terdapat Kesalahan');
         }
 
+    }
+
+    public function editfaktor(Request $req){
+        // Mengambil semua alternatif dan kriteria yang relevan
+        $alternatifdata = Alternatif::all();
+        $kriteriadatakey = $req->except('_token'); // Mengambil semua input kecuali token CSRF
+
+        // Loop melalui setiap alternatif dan kriteria untuk menyimpan nilai
+        foreach ($alternatifdata as $al) {
+            foreach ($kriteriadatakey as $key => $value) {
+                // Memecah key untuk mendapatkan id_kriteria dan id_alternatif
+                $ids = explode('_', $key);
+                // dd($ids);
+
+                if (count($ids) == 2) {
+                    $id_kriteria = $ids[0];
+                    $id_alternatif = $ids[1];
+
+                    // Cari atau buat record Alterkrit
+                    $alterkrit = Alterkrit::firstOrNew([
+                        'id_alternatif' => $id_alternatif,
+                        'id_kriteria' => $id_kriteria
+                    ]);
+
+                    // Update nilai faktor
+                    $alterkrit->faktor = $value;
+                    $alterkrit->save();
+                }
+            }
+        }
+
+        return back()->with('success', 'Data berhasil diperbarui.');
     }
 
     /**

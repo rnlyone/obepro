@@ -13,12 +13,12 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Data Alternatif</h2>
+                            <h2 class="content-header-title float-start mb-0">Data Alternatif (Pola Makan)</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="/">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="alternatif">Data Alternatif</a>
+                                    <li class="breadcrumb-item"><a href="alternatif">Data Alternatif (Pola Makan)</a>
                                     </li>
                                 </ol>
                             </div>
@@ -34,7 +34,7 @@
                         <div class="card-datatable table-responsive pt-0">
                             <div class="card-header p-0">
                                 <div class="head-label">
-                                    <h5 class="mt-1">Tabel Data Alternatif</h5>
+                                    <h5 class="mt-1">Tabel Data Alternatif (Pola Makan)</h5>
                                 </div>
                                 <div class="dt-action-buttons text-end">
                                     <button data-toggle="modal" data-bs-toggle="modal" data-bs-target="#tambah-alternatif" href="javascript:void(0)" class="btn btn-success" id="tombol-tambah">
@@ -47,6 +47,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama</th>
+                                        <th>Gambar</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -96,7 +97,7 @@
                 <h4 class="modal-title" id="myModalLabel1">Tambah Alternatif</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('alternatif.store')}}" method="post">
+            <form action="{{route('alternatif.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <label>Id Alternatif: </label>
@@ -108,6 +109,14 @@
                     <div class="mb-1">
                         <input type="text" name="nama" placeholder="Nama Alternatif" value="{{old('nama')}}" class="form-control" />
                     </div>
+                    <label>Gambar Alternatif: </label>
+                    <div class="mb-1">
+                        <input type="file" name="gambar" class="form-control"/>
+                    </div>
+                    <label class="mb-1">Caption Diagnosa</label>
+                    <textarea class="form-control" rows="3" name="caption" placeholder="Caption Diagnosa">{{old('caption')}}</textarea>
+                    <label class="mb-1">Catatan Diagnosa</label>
+                    <textarea class="form-control" rows="3" name="catatan" placeholder="Catatan Diagnosa">{{old('catatan')}}</textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Accept</button>
@@ -128,7 +137,7 @@
                 <h4 class="modal-title" id="myModalLabel1">Edit Alternatif</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/alternatif/edit" method="post">
+            <form action="/alternatif/edit" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <input type="text" name="idedit" value="{{$ald->id}}" hidden>
@@ -141,31 +150,15 @@
                         <input type="text" name="nama" placeholder="Nama Alternatif" value="{{$ald->nama}}"
                             class="form-control" />
                     </div>
-                    <label>Tempat Lahir Alternatif: </label>
+                    <label>Gambar Alternatif: </label>
                     <div class="mb-1">
-                        <input type="text" name="tempatlahir" placeholder="Tempat Lahir Alternatif"
-                            value="{{$ald->tempatlahir}}" class="form-control" />
+                        <input type="file" name="gambar"
+                            class="form-control" />
                     </div>
-                    <label>Tanggal Lahir Alternatif: </label>
-                    <div class="mb-1">
-                        <input type="date" name="borndate" placeholder="Tanggal Lahir Alternatif"
-                            value="{{$ald->borndate}}" class="form-control" />
-                    </div>
-                    <label>Alamat Alternatif: </label>
-                    <div class="mb-1">
-                        <input type="text" name="alamat" placeholder="Alamat Alternatif"
-                            value="{{$ald->alamat}}" class="form-control" />
-                    </div>
-                    <label>Nomor Telepon Alternatif: </label>
-                    <div class="mb-1">
-                        <input type="text" name="nohp" placeholder="Nomor Alternatif"
-                            value="{{$ald->nohp}}" class="form-control" />
-                    </div>
-                    <label>Email Alternatif: </label>
-                    <div class="mb-1">
-                        <input type="email" name="email" placeholder="Email Alternatif"
-                            value="{{$ald->email}}" class="form-control" />
-                    </div>
+                    <label class="mb-1">Caption Diagnosa</label>
+                        <textarea class="form-control" rows="3" name="caption" placeholder="Caption Diagnosa">{{$ald->caption}}</textarea>
+                    <label class="mb-1">Catatan Diagnosa</label>
+                        <textarea class="form-control" rows="3" name="catatan" placeholder="Catatan Diagnosa">{{$ald->catatan}}</textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Accept</button>
@@ -232,6 +225,9 @@
                 },
                 {
                     data: 'nama'
+                },
+                {
+                    data: 'gambar'
                 },
                 {
                     data: 'action'

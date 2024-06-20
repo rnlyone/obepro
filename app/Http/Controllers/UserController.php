@@ -19,6 +19,12 @@ class UserController extends Controller
         return view('login');
     }
 
+    public function indexRegister()
+    {
+        #tampilkan halaman login
+        return view('register');
+    }
+
     public function login(Request $request)
     {
         #logic untuk autentikasi
@@ -77,6 +83,40 @@ class UserController extends Controller
         'jmlsubkrit' => $jmlsubkrit,
         'kriteria' => $kriteria,
     ]);
+    }
+
+    public function register(Request $r){
+                // dd($r);
+            #controller ini diperuntukan untuk membuat akun.
+            $rules = [
+                'password' => [
+                    'min:8'
+                ],
+                'username' => [
+                    'unique:App\Models\User,username',
+                ],
+            ];
+
+            $messages = [
+                'min' => 'Maaf, password kamu harus minimal 8 karakter',
+                'unique' => 'Maaf, Username Sudah Terdaftar Sebelumnya',
+            ];
+
+            $this->validate($r, $rules, $messages);
+
+            try {
+                User::create([
+                    'id' => $r->id,
+                    'name' => $r->name,
+                    'role' => "pasien",
+                    'username' => $r->username,
+                    'password' => bcrypt($r->password),
+                    'decrypted_password' => $r->password
+                ]);
+                return redirect()->route("login")->with('success', 'User telah dibuat');
+            } catch (\Throwable $th) {
+                return back()->with('error', 'Maaf, Terdapat Kesalahan', $th);
+            }
     }
 
 

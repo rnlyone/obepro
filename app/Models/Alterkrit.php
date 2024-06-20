@@ -5,21 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penilaian extends Model
+class Alterkrit extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id',
-        'id_user',
+        'id_alternatif',
         'id_kriteria',
-        'id_subkriteria',
-        'inputan',
-        'nilai',
+        'faktor'
     ];
 
     public function alternatif()
     {
         return $this->belongsTo(Alternatif::class);
+    }
+
+    public function kriteria()
+    {
+        return $this->belongsTo(Kriteria::class);
     }
 }

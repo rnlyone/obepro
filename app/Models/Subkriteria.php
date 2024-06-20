@@ -12,6 +12,9 @@ use HasFactory;
 protected $fillable = [
     'id',
     'id_kriteria',
+    'range_awal',
+    'range_akhir',
+    'satuan',
     'nama',
     'bobot'
 ];

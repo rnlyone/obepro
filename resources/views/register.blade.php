@@ -25,7 +25,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <meta name="keywords"
         content="admin template, OBEPRO admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Login Page</title>
+    <title>Register Page</title>
     <link rel="apple-touch-icon" href="/app-assets/images/ico/apple-icon-120.html">
     <link rel="shortcut icon" type="image/x-icon"
         href="https://pixinvent.com/demo/OBEPRO-html-bootstrap-admin-template/app-assets/images/ico/favicon.ico">
@@ -55,6 +55,54 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <!-- END: Custom CSS-->
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const usernameInput = document.querySelector('input[name="username"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+            const confirmPasswordInput = document.querySelector('input[name="confirmpassword"]');
+
+            function validatePassword() {
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordInput.setCustomValidity("Password Tidak Sama");
+                } else {
+                    confirmPasswordInput.setCustomValidity("");
+                }
+            }
+
+            function validateUsername() {
+                const validPattern = /^[a-z0-9_-]*$/;
+                if (!validPattern.test(usernameInput.value)) {
+                    usernameInput.setCustomValidity("Username hanya dapat diisi dengan huruf kecil, angka, '_', dan '-'");
+                } else {
+                    usernameInput.setCustomValidity("");
+                }
+            }
+
+            passwordInput.addEventListener('input', validatePassword);
+            confirmPasswordInput.addEventListener('input', validatePassword);
+            usernameInput.addEventListener('input', validateUsername);
+
+            form.addEventListener('submit', function (event) {
+                validatePassword();
+                validateUsername();
+                let errorMessage = "";
+
+                if (!usernameInput.checkValidity()) {
+                    errorMessage += "Username hanya dapat diisi dengan huruf kecil, angka, '_', dan '-', \n";
+                }
+                if (!confirmPasswordInput.checkValidity()) {
+                    errorMessage += "Password Tidak Sama.\n";
+                }
+
+                if (errorMessage) {
+                    alert(errorMessage);
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
+        });
+    </script>
 </head>
 <!-- END: Head-->
 
@@ -84,15 +132,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </a>
 
                                 <h4 class="card-title mb-1">Selamat Datang</h4>
-                                <p class="card-text mb-2">Silahkan Login dengan menggunakan akun anda.</p>
+                                <p class="card-text mb-2">Silahkan Daftar dengan mengisi formulir berikut.</p>
 
-                                <form class="auth-login-form mt-2" action="{{route('auth.login')}}" method="POST">
+                                <form class="auth-login-form mt-2" action="{{route('auth.register')}}" method="POST">
                                     @csrf
                                     <div class="mb-1">
+                                        <label for="login-name" class="form-label">Nama Lengkap</label>
+                                        <input type="text" value="{{old('name')}}" class="form-control"
+                                            id="login-name" name="name" placeholder="Nama Lengkap Kamu"
+                                            aria-describedby="login-name" tabindex="1" autofocus />
+                                    </div>
+                                    <div class="mb-1">
                                         <label for="login-username" class="form-label">username</label>
-                                        <input type="text" value="{{old('username')}}" class="form-control"
-                                            id="login-username" name="username" placeholder="username"
-                                            aria-describedby="login-username" tabindex="1" autofocus />
+                                        <input type="text" value="{{old('username')}}" class="form-control" id="login-username" name="username" placeholder="username (huruf kecil, angka, _, -)" aria-describedby="login-username" tabindex="1" autofocus pattern="^[a-z0-9_-]+$" />
                                     </div>
                                     <div class="mb-1">
                                         <div class="d-flex justify-content-between">
@@ -101,6 +153,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="input-group input-group-merge form-password-toggle">
                                             <input type="password" class="form-control form-control-merge"
                                                 id="login-password" name="password" tabindex="2"
+                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                                aria-describedby="login-password" />
+                                            <span class="input-group-text cursor-pointer"><i
+                                                    data-feather="eye"></i></span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <label class="form-label" for="login-password">Konfirmasi Password</label>
+                                        </div>
+                                        <div class="input-group input-group-merge form-password-toggle">
+                                            <input type="password" class="form-control form-control-merge"
+                                                id="login-password" name="confirmpassword" tabindex="2"
                                                 placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                                 aria-describedby="login-password" />
                                             <span class="input-group-text cursor-pointer"><i
@@ -117,12 +180,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </form>
 
                                 <p class="text-center mt-2">
-                                    <span>Belum Punya Akun?</span>
-                                    <a href="{{route('register')}}">
-                                        <span>Daftar Disini</span>
+                                    <span>Sudah Punya Akun?</span>
+                                    <a href="{{route('login')}}">
+                                        <span>Login Disini</span>
                                     </a>
                                 </p>
-
 
                                 @if (session()->get('gagal'))
                                 <div class="alert alert-danger mt-1 alert-validation-msg" role="alert">
@@ -139,8 +201,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 @endif
-                                @if (session()->get('success'))
-                                <div class="alert alert-success mt-1 alert-validation-msg" role="alert">
+                                @if (session()->has('success'))
+                                <div class="alert alert-danger mt-1 alert-validation-msg" role="alert">
                                     <div class="alert-body d-flex align-items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -155,7 +217,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 @endif
                                 @error('email')
-                                <div class="alert alert-success mt-1 alert-validation-msg" role="alert">
+                                <div class="alert alert-danger mt-1 alert-validation-msg" role="alert">
                                     <div class="alert-body d-flex align-items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
