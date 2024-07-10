@@ -184,56 +184,6 @@ class ProfmatController extends Controller
                 $totalrank[$user->id] = ProfmatController::array_rank($nilaitotal[$user->id]);
                 $astotalrank = $totalrank;
                 asort($astotalrank[$user->id]);
-                // array_slice($astotalrank[auth()->user()->id], 0, 3);
-                // dd($astotalrank);
-
-                // foreach($alt as $a => $al){
-                //     $corefactoraddition[$user->id][$al->id] = 0;
-                //     $secondaryfactoraddition[$user->id][$al->id] = 0;
-                //     // dd($krit->where('jenis_kriteria', 'cf'));
-                //     foreach($krit->where('jenis_kriteria', 'cf') as $k => $kr){
-                //         try {
-                //             $nilai[$user->id][$al->id][$kr->id] = Penilaian::where('id_kriteria', $kr->id)->where('id_user', $user->id)->where('id_alternatif', $al->id)->first()->nilai;
-
-                //             if($nilai[$user->id][$al->id][$kr->id] <= 3){
-                //                 $klasifikasi[$user->id][$al->id][$kr->id] = 1;
-                //             } else {
-                //                 $klasifikasi[$user->id][$al->id][$kr->id] = 0;
-                //             }
-                //         } catch (\Throwable $th) {
-                //             $nilai[$user->id][$al->id][$kr->id] = NULL;
-                //             $klasifikasi[$user->id][$al->id][$kr->id] = 0;
-                //         }
-                //         $gap[$user->id][$al->id][$kr->id] = ProfmatController::gap($nilai[$user->id][$al->id][$kr->id], 5);
-                //         $bobotgap[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
-                //         $bobotgapcf[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
-                //         $corefactoraddition[$user->id][$al->id] = $corefactoraddition[$user->id][$al->id] + $bobotgapcf[$user->id][$al->id][$kr->id];
-                //     }
-                //     $corefactor[$user->id][$al->id] = $corefactoraddition[$user->id][$al->id] / $krit->where('jenis_kriteria', 'cf')->count();
-                //     foreach($krit->where('jenis_kriteria', 'sf') as $k => $kr){
-                //         try {
-                //             $nilai[$user->id][$al->id][$kr->id] = Penilaian::where('id_kriteria', $kr->id)->where('id_user', $user->id)->where('id_alternatif', $al->id)->first()->nilai;
-                //             if($nilai[$user->id][$al->id][$kr->id] <= 3){
-                //                 $klasifikasi[$user->id][$al->id][$kr->id] = 1;
-                //             } else {
-                //                 $klasifikasi[$user->id][$al->id][$kr->id] = 0;
-                //             }
-                //         } catch (\Throwable $th) {
-                //             $nilai[$user->id][$al->id][$kr->id] = NULL;
-                //             $klasifikasi[$user->id][$al->id][$kr->id] = 0;
-                //         }
-                //         $gap[$user->id][$al->id][$kr->id] = ProfmatController::gap($nilai[$user->id][$al->id][$kr->id], 5);
-                //         $bobotgap[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
-                //         $bobotgapsf[$user->id][$al->id][$kr->id] = ProfmatController::bobotgap($nilai[$user->id][$al->id][$kr->id], 5);
-                //         $secondaryfactoraddition[$user->id][$al->id] = $secondaryfactoraddition[$user->id][$al->id] + $bobotgapsf[$user->id][$al->id][$kr->id];
-                //     }
-                //     $secondaryfactor[$user->id][$al->id] = $secondaryfactoraddition[$user->id][$al->id] / $krit->where('jenis_kriteria', 'sf')->count();
-
-                //     $nilaitotal[$user->id][$al->id] = number_format(($corefactor[$user->id][$al->id]*0.6)+($secondaryfactor[$user->id][$al->id]*0.4), 1, '.', '');
-                //     $jumlah[$a] = $a+1;
-                // }
-                // // dd($nilaitotal[$user->id], ProfmatController::reverse_karray($nilaitotal[$user->id]) );
-                // $totalrank[$user->id] = ProfmatController::array_rank($nilaitotal[$user->id]);
             }
 
 
