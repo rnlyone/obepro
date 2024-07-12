@@ -116,7 +116,7 @@
                                     <div class="invalid-tooltip">Tolong berikan berat yang valid.</div>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3 position-relative">
-                                    <label class="form-label" for="height">Tinggi (m)</label>
+                                    <label class="form-label" for="height">Tinggi (cm)</label>
                                     <input type="number" step="0.01" class="form-control" id="height" placeholder="Enter your height" required="">
                                     <div class="invalid-tooltip">Tolong berikan tinggi yang valid.</div>
                                 </div>
