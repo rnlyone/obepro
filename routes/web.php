@@ -72,5 +72,6 @@ Route::get('/', function () {
 });
 
 Route::get('/menumakan', function () {
-    return view('auth.menumakan');
+    $alter = Alternatif::all();
+    return view('auth.menumakan',['alter' => $alter]);
 });

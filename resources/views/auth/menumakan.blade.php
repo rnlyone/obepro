@@ -47,82 +47,28 @@
                                   </h2>
                                   <div id="accordionMarginOne" class="accordion-collapse collapse" aria-labelledby="headingMarginOne" data-bs-parent="#accordionMargin" style="">
                                     <div class="accordion-body">
-                                      <img src="/menu/Normal.jpeg" style="width: 40vh" alt="">
+                                        <a href="/menu/Normal.jpeg" target="_blank">
+                                            <img src="/menu/Normal.jpeg" style="width: 100vh" alt="Gambar Normal">
+                                        </a>
                                     </div>
                                   </div>
                                 </div>
+                                @foreach ($alter as $i => $a)
                                 <div class="accordion-item">
-                                  <h2 class="accordion-header" id="headingMarginTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMarginTwo" aria-expanded="false" aria-controls="accordionMarginTwo">
-                                      Menu Makanan Rendah Kolestrol
-                                    </button>
-                                  </h2>
-                                  <div id="accordionMarginTwo" class="accordion-collapse collapse" aria-labelledby="headingMarginTwo" data-bs-parent="#accordionMargin">
-                                    <div class="accordion-body">
-                                      <img src="/menu/Menu Rendah Kolestrol.png" style="max-width: -webkit-fill-available" alt="">
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header" id="headingMarginThree">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMarginThree" aria-expanded="false" aria-controls="accordionMarginThree">
-                                      Menu Makanan Rendah Kalori
-                                    </button>
-                                  </h2>
-                                  <div id="accordionMarginThree" class="accordion-collapse collapse" aria-labelledby="headingMarginThree" data-bs-parent="#accordionMargin">
-                                    <div class="accordion-body">
-                                    <img src="/menu/Menu Rendah Kalori.png" style="max-width: -webkit-fill-available" alt="">
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="accordion-item">
-                                  <h2 class="accordion-header" id="headingMarginFour">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMarginFour" aria-expanded="false" aria-controls="accordionMarginFour">
-                                      Menu Makanan Diet DM 1700 Kkal
-                                    </button>
-                                  </h2>
-                                  <div id="accordionMarginFour" class="accordion-collapse collapse" aria-labelledby="headingMarginFour" data-bs-parent="#accordionMargin">
-                                    <div class="accordion-body">
-                                        <img src="/menu/Menu Diet DM 1700 Kkal.png" style="max-width: -webkit-fill-available" alt="">
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingMargin-5">
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMargin-5" aria-expanded="false" aria-controls="accordionMargin-5">
-                                        Menu Makanan Diet DM + Rendah Natrium
+                                    <h2 class="accordion-header" id="headingMargin{{$i}}">
+                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMargin{{$i}}" aria-expanded="false" aria-controls="accordionMargin{{$i}}">
+                                        {{$a->nama}}
                                       </button>
                                     </h2>
-                                    <div id="accordionMargin-5" class="accordion-collapse collapse" aria-labelledby="headingMargin-5" data-bs-parent="#accordionMargin">
+                                    <div id="accordionMargin{{$i}}" class="accordion-collapse collapse" aria-labelledby="headingMargin{{$i}}" data-bs-parent="#accordionMargin" style="">
                                       <div class="accordion-body">
-                                          <img src="/menu/Menu Diet DM Rendah Natrium.png" style="max-width: -webkit-fill-available" alt="">
+                                        <a href="{{asset('storage/files/gambar/' . $a->gambar)}}" target="_blank" rel="noopener noreferrer">
+                                            <img src="{{asset('storage/files/gambar/' . $a->gambar)}}" style="width: 100%" alt="">
+                                        </a>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingMargin-6">
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMargin-6" aria-expanded="false" aria-controls="accordionMargin-6">
-                                        Menu Makanan Diet DM + Rendah Natrium + Rendah Kolestrol
-                                      </button>
-                                    </h2>
-                                    <div id="accordionMargin-6" class="accordion-collapse collapse" aria-labelledby="headingMargin-6" data-bs-parent="#accordionMargin">
-                                      <div class="accordion-body">
-                                          <img src="/menu/Menu Diet DM Rendah Natrium Rendah Kolestrol.png" style="max-width: -webkit-fill-available" alt="">
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingMargin-7">
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMargin-7" aria-expanded="false" aria-controls="accordionMargin-7">
-                                        Menu Makanan Diet DM + Rendah Kolestrol
-                                      </button>
-                                    </h2>
-                                    <div id="accordionMargin-7" class="accordion-collapse collapse" aria-labelledby="headingMargin-7" data-bs-parent="#accordionMargin">
-                                      <div class="accordion-body">
-                                          <img src="/menu/Menu Diet DM Rendah Kolestrol.png" style="max-width: -webkit-fill-available" alt="">
-                                      </div>
-                                    </div>
-                                  </div>
+                                @endforeach
                               </div>
                           </div>
                         </div>
