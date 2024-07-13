@@ -100,7 +100,7 @@ class AlternatifController extends Controller
             if ($req->hasFile('gambar')) {
                 $gambar = $req->file('gambar');
                 $gambar_name = time() . '_' . $gambar->getClientOriginalName();
-                $gambar->storeAs('public/gambar', $gambar_name); // Adjust storage path as needed
+                $gambar->storeAs('files/gambar', $gambar_name); // Adjust storage path as needed
 
                 // Create alternatif with image
                 $alternatif = Alternatif::create([
@@ -157,10 +157,10 @@ class AlternatifController extends Controller
             if ($req->hasFile('gambar')) {
                 $gambar = $req->file('gambar');
                 $gambar_name = time() . '_' . $gambar->getClientOriginalName();
-                $gambar->storeAs('public/gambar', $gambar_name); // Adjust storage path as needed
+                $gambar->storeAs('files/gambar', $gambar_name); // Adjust storage path as needed
 
                 // Delete old image if necessary
-                Storage::delete('public/gambar/' . $alternatif->gambar);
+                Storage::delete('files/gambar/' . $alternatif->gambar);
 
                 // Update alternatif with new image
                 $alternatif->gambar = $gambar_name;

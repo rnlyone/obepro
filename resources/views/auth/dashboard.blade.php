@@ -11,7 +11,7 @@
 
             <!-- Greetings Card starts -->
             <div class="row match-height">
-            <div class="col-lg-5 col-md-12 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card card-congratulations">
                     <div class="card-body text-center">
                         <img src="/app-assets/images/elements/decore-left.png" class="congratulations-img-left"
