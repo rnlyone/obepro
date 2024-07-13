@@ -42,7 +42,7 @@ class AlternatifController extends Controller
                 return $button;
             })
             ->addColumn('gambar', function($data){
-                $gambarUrl = asset('storage/gambar/' . $data->gambar);
+                $gambarUrl = asset('storage/files/gambar/' . $data->gambar);
                 $image = '<img style="max-width: 100%" src="'.$gambarUrl.'" alt="">';
                 return $image;
             })

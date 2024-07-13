@@ -73,12 +73,12 @@
                                         <h4 class="card-title">Menu Makanan #{{$as}}</h4>
                                         <h6 class="card-subtitle text-muted">{{$alter->find($alid)->nama}}</h6>
                                     </div>
-                                    <img class="img-fluid" src="{{asset('storage/gambar/' . $alter->find($alid)->gambar)}}" alt="Card image cap">
+                                    <img class="img-fluid" src="{{asset('storage/files/gambar/' . $alter->find($alid)->gambar)}}" alt="Card image cap">
                                     <div class="card-body">
                                         <p class="card-text">{{$alter->find($alid)->caption}}</p>
                                         <p class="card-text">{{$alter->find($alid)->catatan}}</p>
-                                        <a href="{{asset('storage/gambar/' . $alter->find($alid)->gambar)}}" class="card-link">Lihat Menu Makanan</a>
-                                        <a href="{{ asset('storage/gambar/' . $alter->find($alid)->gambar) }}" download class="card-link">Download Menu Makanan</a>
+                                        <a href="{{asset('storage/files/gambar/' . $alter->find($alid)->gambar)}}" class="card-link">Lihat Menu Makanan</a>
+                                        <a href="{{ asset('storage/files/gambar/' . $alter->find($alid)->gambar) }}" download class="card-link">Download Menu Makanan</a>
 
                                     </div>
                                 </div>
