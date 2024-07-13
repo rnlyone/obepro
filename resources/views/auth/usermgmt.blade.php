@@ -151,12 +151,12 @@
                                   type="radio"
                                   name="role"
                                   id="userid"
-                                  value="user"
-                                  @if ($usd->role == "user")
+                                  value="pasien"
+                                  @if ($usd->role == "pasien")
                                     checked
                                   @endif
                                 />
-                                <label class="form-check-label" for="userid">User</label>
+                                <label class="form-check-label" for="userid">Pasien</label>
                               </div>
                         </div>
                     </div>
@@ -245,12 +245,12 @@
                                   type="radio"
                                   name="role"
                                   id="userid"
-                                  value="user"
-                                  @if ($usd->role == "user")
+                                  value="pasien"
+                                  @if ($usd->role == "pasien")
                                     checked
                                   @endif
                                 />
-                                <label class="form-check-label" for="userid">User</label>
+                                <label class="form-check-label" for="userid">Pasien</label>
                               </div>
                         </div>
                     </div>
